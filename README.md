@@ -10,8 +10,7 @@
   <img alt="AUPRO@30%" src="https://img.shields.io/badge/AUPRO%4030%25-0.9127-2d6a8f">
   <img alt="categories" src="https://img.shields.io/badge/MVTec%20categories-15-444">
   <img alt="python" src="https://img.shields.io/badge/python-3.13-3776ab">
-  <!-- After pushing, set <OWNER>/<REPO>: -->
-  <!-- <img alt="ci" src="https://github.com/<OWNER>/<REPO>/actions/workflows/ci.yml/badge.svg"> -->
+  <img alt="ci" src="https://github.com/AlessandroPata/mvtec-anomaly-detection/actions/workflows/ci.yml/badge.svg">
 </p>
 
 ---
