@@ -13,6 +13,10 @@ on:
 jobs:
   regression-tests:
     runs-on: ubuntu-latest
+    env:
+      # make the in-repo packages (server, datasets, webapp, trainers, …) importable
+      # so the server-dependent tests actually run instead of importorskip-skipping
+      PYTHONPATH: ${{ github.workspace }}/app/ocgan-modernized
     defaults:
       run:
         working-directory: app/ocgan-modernized
