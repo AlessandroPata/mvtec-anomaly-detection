@@ -6,6 +6,8 @@ export type ArenaPhase = 'idle' | 'starting' | 'running' | 'done' | 'cancelled' 
 
 interface ArenaConfig { category: string; variant: string; n: number; seed: number | null }
 
+export interface ArenaSnapshot { variant: string; category: string; seed: number | null; n: number; summary: ArenaSummary }
+
 interface ArenaState {
   config: ArenaConfig;
   phase: ArenaPhase;
@@ -17,6 +19,8 @@ interface ArenaState {
   summary: ArenaSummary | null;
   error: string | null;
   startedAt: number | null;
+  snapA: ArenaSnapshot | null;
+  snapB: ArenaSnapshot | null;
 
   setConfig: (c: Partial<ArenaConfig>) => void;
   start: () => Promise<void>;
@@ -25,6 +29,8 @@ interface ArenaState {
   finishJob: (f: ArenaFinal) => void;
   cancel: () => void;
   reset: () => void;
+  snapshot: (slot: 'A' | 'B') => void;
+  clearSnapshots: () => void;
 }
 
 let unsubscribe: (() => void) | null = null;
@@ -57,6 +63,7 @@ export const useArena = create<ArenaState>((set, get) => ({
   config: { category: 'bottle', variant: 'production', n: 100, seed: null },
   phase: 'idle', jobId: null, seed: null, images: [], results: {},
   done: 0, correct: 0, liveAccuracy: 0, summary: null, error: null, startedAt: null,
+  snapA: null, snapB: null,
 
   setConfig: (c) => set((s) => ({ config: { ...s.config, ...c } })),
 
@@ -101,4 +108,11 @@ export const useArena = create<ArenaState>((set, get) => ({
     unsubscribe?.(); unsubscribe = null;
     set({ phase: 'idle', jobId: null, seed: null, images: [], results: {}, done: 0, correct: 0, liveAccuracy: 0, summary: null, error: null, startedAt: null });
   },
+
+  snapshot: (slot) => set((s) => {
+    if (!s.summary) return s;
+    const snap: ArenaSnapshot = { variant: s.config.variant, category: s.config.category, seed: s.seed, n: s.config.n, summary: s.summary };
+    return slot === 'A' ? { snapA: snap } : { snapB: snap };
+  }),
+  clearSnapshots: () => set({ snapA: null, snapB: null }),
 }));

@@ -27,6 +27,7 @@ export interface ArenaPoll { job_id: string; status: string; results: ArenaResul
 
 export interface PredictionResponse {
   anomaly_score: number; anomaly_probability: number | null; is_anomaly: boolean;
+  calibrated_probability?: number | null;
   threshold: number; category: string; inference_ms: number;
   heatmap_base64: string; model_variant?: string;
   defect_type?: string; filename?: string; ground_truth_anomaly?: boolean;

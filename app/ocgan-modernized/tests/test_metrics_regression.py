@@ -101,6 +101,32 @@ class TestHonestCalibration:
         assert 0.5 < honest_acc <= 1.0
 
 
+# --- probability calibration ------------------------------------------------
+
+class TestProbabilityCalibration:
+    def test_platt_is_a_sigmoid(self):
+        mod = pytest.importorskip("calibrate_probabilities")
+        cal = {"method": "platt", "a": 2.0, "b": -1.0}
+        p = mod.apply_calibrator(cal, np.array([0.5]))  # sigmoid(2*0.5-1)=sigmoid(0)=0.5
+        assert p[0] == pytest.approx(0.5, abs=1e-9)
+
+    def test_isotonic_is_monotone_and_clipped(self):
+        mod = pytest.importorskip("calibrate_probabilities")
+        cal = {"method": "isotonic", "x": [0.0, 0.5, 1.0], "y": [0.0, 0.4, 1.0]}
+        p = mod.apply_calibrator(cal, np.array([-1.0, 0.25, 0.5, 2.0]))
+        assert (p >= 0).all() and (p <= 1).all()
+        assert np.all(np.diff(p) >= 0)  # monotone non-decreasing
+
+    def test_calibration_improves_brier_on_miscalibrated_scores(self):
+        # scores systematically over-confident -> calibration must lower the Brier score
+        mod = pytest.importorskip("calibrate_probabilities")
+        rng = np.random.default_rng(7)
+        y = np.array([0] * 100 + [1] * 100)
+        raw = np.where(y == 1, rng.uniform(0.55, 1.0, 200), rng.uniform(0.45, 0.9, 200))
+        p_cv = mod.cv_calibrate(raw, y, mod.fit_platt, k=5)
+        assert mod.brier(p_cv, y) <= mod.brier(np.clip(raw, 0, 1), y) + 1e-9
+
+
 # --- opt-in live GPU gate (verify_all) --------------------------------------
 
 @pytest.mark.skipif(os.environ.get("RUN_GPU_VERIFY") != "1",

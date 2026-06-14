@@ -34,6 +34,7 @@ app/ocgan-modernized/verify_results*.md
 app/ocgan-modernized/pixel_metrics_results.md
 app/ocgan-modernized/honest_calibration_results.md
 app/ocgan-modernized/ensemble_experiment_results.md
+app/ocgan-modernized/probability_calibration_results.md
 
 # ---- Dataset (licensed, not redistributed — download from MVTec) ----
 # Leading slash anchors to repo root so it does NOT match the local Python

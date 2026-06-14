@@ -116,6 +116,46 @@ def _load_threshold_overrides() -> dict:
     return _threshold_overrides
 
 
+_prob_calibration: dict | None = None
+
+
+def _load_probability_calibration() -> dict:
+    """Per-category score→probability calibrators from calibrate_probabilities.py.
+
+    Maps a raw anomaly score to a calibrated probability (Platt or isotonic).
+    Production only; absent file → no calibration applied.
+    """
+    global _prob_calibration
+    if _prob_calibration is None:
+        p = PRODUCTION_MODELS_DIR / "probability_calibration.json"
+        try:
+            data = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+            _prob_calibration = data.get("per_category", {})
+        except Exception:
+            _prob_calibration = {}
+    return _prob_calibration
+
+
+def calibrated_probability(category: str, variant: str, score) -> float | None:
+    """Calibrated P(anomaly) for a raw score (production only); None if unavailable."""
+    if variant != "production" or score is None:
+        return None
+    cal = (_load_probability_calibration().get(category) or {}).get("calibrator")
+    if not cal:
+        return None
+    try:
+        s = float(score)
+        if cal["method"] == "platt":
+            import math
+            z = max(-60.0, min(60.0, cal["a"] * s + cal["b"]))
+            return 1.0 / (1.0 + math.exp(-z))
+        if cal["method"] == "isotonic":
+            return float(np.interp(s, np.asarray(cal["x"]), np.asarray(cal["y"])))
+    except Exception:
+        return None
+    return None
+
+
 def get_variant_model(category: str, variant: str = "production"):
     model = _resolve_variant_model(category, variant)
     ov = _load_threshold_overrides().get(variant, {}).get(category)
@@ -259,6 +299,7 @@ def evaluation_endpoint():
         "benchmarks": benchmarks,
         "pixel_metrics": _read_json(PRODUCTION_MODELS_DIR / "pixel_metrics.json"),
         "honest_calibration": _read_json(PRODUCTION_MODELS_DIR / "honest_calibration.json"),
+        "probability_calibration": _read_json(PRODUCTION_MODELS_DIR / "probability_calibration.json"),
         "ensemble": _read_json(PRODUCTION_MODELS_DIR / "ensemble_experiment.json"),
         "threshold_overrides": _read_json(PRODUCTION_MODELS_DIR / "threshold_overrides.json"),
     })
@@ -352,6 +393,7 @@ async def predict(
     return JSONResponse(content={
         "anomaly_score": result["anomaly_score"],
         "anomaly_probability": result["anomaly_probability"],
+        "calibrated_probability": calibrated_probability(category, model_variant, result["anomaly_score"]),
         "is_anomaly": result["is_anomalous"],
         "threshold": result["threshold"],
         "category": result["category"],
@@ -386,6 +428,7 @@ async def predict_from_dataset(
     return JSONResponse(content={
         "anomaly_score": result["anomaly_score"],
         "anomaly_probability": result["anomaly_probability"],
+        "calibrated_probability": calibrated_probability(category, model_variant, result["anomaly_score"]),
         "is_anomaly": result["is_anomalous"],
         "threshold": result["threshold"],
         "category": result["category"],

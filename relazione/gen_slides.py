@@ -430,8 +430,8 @@ bullets(tf, [
      ("override non distruttivo: screw 0.44->0.92, capsule 0.61->0.98, zero regressioni; AUROC invariata + slider interattivo in arena", dict(size=15, color=INK))],
     [("Localizzazione pixel-level: ", dict(size=15, color=INK, bold=True)),
      ("anomaly-map vs maschere ground-truth: macro pixel-AUROC 0.9714 e AUPRO@30% 0.9127 (metrica ufficiale MVTec), accanto allo 0.9846 image-level", dict(size=15, color=INK))],
-    [("Soglia onesta, non oracle: ", dict(size=15, color=INK, bold=True)),
-     ("la best-F1 guarda le etichette del test; con cross-validation l'accuratezza dispiegabile e' 0.954 vs 0.968 oracle (gap +1.4pp): l'operating point e' stabile", dict(size=15, color=INK))],
+    [("Calibrazione onesta (soglia + probabilita'): ", dict(size=15, color=INK, bold=True)),
+     ("best-F1 e' un oracle -> accuratezza held-out 0.954 vs 0.968; lo score grezzo non e' una probabilita' (ECE 0.32) -> calibrato Platt/isotonica ECE 0.03 (held-out)", dict(size=15, color=INK))],
     [("TTA rotazioni, risultato negativo: ", dict(size=15, color=INK, bold=True)),
      ("peggiora screw (0.93->0.89), il bank gia' codifica le orientazioni. Non integrata", dict(size=15, color=INK))],
 ], gap=8)

@@ -2,7 +2,8 @@
 node_modules/
 
 # Build output
-dist/
+# NOTE: dist/ is intentionally committed in this showcase repo so the FastAPI
+# backend (start-webapp.bat) can serve the pre-built frontend without an npm build.
 dist-ssr/
 
 # Logs

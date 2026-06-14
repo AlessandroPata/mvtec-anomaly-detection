@@ -8,6 +8,7 @@ import { Insights } from './Insights';
 import { InfoNote } from '../../components/InfoNote';
 import { aurocColor } from '../../components/heat';
 import { MACRO_PIXEL_AUROC, MACRO_AUPRO, PIXEL_METRICS } from '../../data/pixelMetrics';
+import { MACRO_BRIER_RAW, MACRO_BRIER_CAL, MACRO_ECE_RAW, MACRO_ECE_CAL, CALIBRATION } from '../../data/calibration';
 
 export default function EvaluationLab() {
   const [metric, setMetric] = useState<MetricKey>('auroc');
@@ -85,6 +86,33 @@ export default function EvaluationLab() {
               <span className="num w-16 text-right" style={{ color: aurocColor(r.pixel_auroc) }}>{r.pixel_auroc.toFixed(4)}</span>
               <span className="num w-20 text-right" style={{ color: aurocColor(r.aupro) }} title="AUPRO@30% — per-region overlap">PRO {r.aupro.toFixed(3)}</span>
               <span className="num w-16 text-right text-steel" title="pixel average precision">AP {r.pixel_ap.toFixed(2)}</span>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Probability calibration"
+        sub={`Brier ${MACRO_BRIER_RAW.toFixed(3)} → ${MACRO_BRIER_CAL.toFixed(3)} · ECE ${MACRO_ECE_RAW.toFixed(3)} → ${MACRO_ECE_CAL.toFixed(3)} — raw score vs. calibrated probability`}>
+        <InfoNote title="Why calibrate, and how it's scored">
+          A raw anomaly score ranks anomalies well (high AUROC) but is <em>not</em> a probability:
+          a score of 0.8 doesn't mean "80% likely a defect". We fit a post-hoc calibrator per category
+          (<strong>Platt</strong> sigmoid or <strong>isotonic</strong>, whichever wins on held-out CV) that maps the score to a
+          true probability. Quality is the <strong>Brier score</strong> (mean squared error of the probability) and
+          <strong> ECE</strong> (expected calibration error — gap between confidence and accuracy, 10 bins); both are
+          measured on held-out folds, not the fit data. Macro ECE drops from {MACRO_ECE_RAW.toFixed(2)} to {MACRO_ECE_CAL.toFixed(2)}
+          (≈10× better). The live prediction view shows the calibrated probability next to the raw score.
+        </InfoNote>
+        <div className="panel p-4 space-y-1.5">
+          {[...CALIBRATION].sort((a, b) => (b.ece_raw - b.ece_cal) - (a.ece_raw - a.ece_cal)).map((r) => (
+            <div key={r.category} className="flex items-center gap-3 text-xs">
+              <span className="w-20 truncate">{r.category.replace(/_/g, ' ')}</span>
+              <span className="w-16 text-steel" title="calibration method">{r.method}</span>
+              <span className="num w-28 text-right text-steel" title="expected calibration error: raw → calibrated">
+                ECE {r.ece_raw.toFixed(2)} → <span style={{ color: '#1f9d55' }}>{r.ece_cal.toFixed(2)}</span>
+              </span>
+              <span className="num w-32 text-right text-steel" title="Brier score: raw → calibrated">
+                Brier {r.brier_raw.toFixed(3)} → <span style={{ color: '#1f9d55' }}>{r.brier_cal.toFixed(3)}</span>
+              </span>
             </div>
           ))}
         </div>

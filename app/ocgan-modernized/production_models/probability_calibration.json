@@ -1,0 +1,496 @@
+{
+  "variant": "production",
+  "folds": 5,
+  "macro": {
+    "brier_raw": 0.17592,
+    "brier_cal": 0.03352,
+    "ece_raw": 0.31595,
+    "ece_cal": 0.03342
+  },
+  "per_category": {
+    "bottle": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 115.33241229534532,
+        "b": -54.204962027267726
+      },
+      "brier_raw": 0.09774,
+      "brier_cal": 0.00017,
+      "ece_raw": 0.30217,
+      "ece_cal": 0.00156,
+      "n": 83,
+      "n_anom": 63,
+      "candidates": {
+        "platt": {
+          "brier": 0.00017,
+          "ece": 0.00156
+        },
+        "isotonic": {
+          "brier": 0.00109,
+          "ece": 0.00478
+        }
+      }
+    },
+    "cable": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.489489,
+          0.543204,
+          0.54459,
+          0.553474,
+          0.553516,
+          0.56857,
+          0.575558,
+          0.872748
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.125,
+          0.125,
+          0.25,
+          0.25,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.17032,
+      "brier_cal": 0.01794,
+      "ece_raw": 0.31013,
+      "ece_cal": 0.02498,
+      "n": 150,
+      "n_anom": 92,
+      "candidates": {
+        "platt": {
+          "brier": 0.01903,
+          "ece": 0.02358
+        },
+        "isotonic": {
+          "brier": 0.01794,
+          "ece": 0.02498
+        }
+      }
+    },
+    "capsule": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.290574,
+          0.357742,
+          0.362395,
+          0.368102,
+          0.371345,
+          0.452027,
+          0.453504,
+          0.846747
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.8,
+          0.8,
+          0.9666666666666667,
+          0.9666666666666667,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.25545,
+      "brier_cal": 0.03054,
+      "ece_raw": 0.38722,
+      "ece_cal": 0.02226,
+      "n": 132,
+      "n_anom": 109,
+      "candidates": {
+        "platt": {
+          "brier": 0.0377,
+          "ece": 0.05373
+        },
+        "isotonic": {
+          "brier": 0.03054,
+          "ece": 0.02226
+        }
+      }
+    },
+    "carpet": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.367631,
+          0.403143,
+          0.404314,
+          0.426504,
+          0.442081,
+          0.442205,
+          0.447051,
+          0.776815
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.16666666666666666,
+          0.16666666666666666,
+          0.5,
+          0.5,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.15062,
+      "brier_cal": 0.02452,
+      "ece_raw": 0.28609,
+      "ece_cal": 0.02474,
+      "n": 117,
+      "n_anom": 89,
+      "candidates": {
+        "platt": {
+          "brier": 0.02554,
+          "ece": 0.02794
+        },
+        "isotonic": {
+          "brier": 0.02452,
+          "ece": 0.02474
+        }
+      }
+    },
+    "grid": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.352535,
+          0.353711,
+          0.353718,
+          0.392686,
+          0.395992,
+          0.408654,
+          0.411418,
+          0.454307,
+          0.457597,
+          0.697753
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.0625,
+          0.0625,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.7857142857142857,
+          0.7857142857142857,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.22076,
+      "brier_cal": 0.07682,
+      "ece_raw": 0.38589,
+      "ece_cal": 0.07536,
+      "n": 78,
+      "n_anom": 57,
+      "candidates": {
+        "platt": {
+          "brier": 0.07784,
+          "ece": 0.07683
+        },
+        "isotonic": {
+          "brier": 0.07682,
+          "ece": 0.07536
+        }
+      }
+    },
+    "hazelnut": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 778.6344605885663,
+        "b": -550.3755886108033
+      },
+      "brier_raw": 0.19753,
+      "brier_cal": 0.00437,
+      "ece_raw": 0.37169,
+      "ece_cal": 0.00171,
+      "n": 110,
+      "n_anom": 70,
+      "candidates": {
+        "platt": {
+          "brier": 0.00437,
+          "ece": 0.00171
+        },
+        "isotonic": {
+          "brier": 0.00447,
+          "ece": 0.00096
+        }
+      }
+    },
+    "leather": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 106.88333594414789,
+        "b": -46.82946276875731
+      },
+      "brier_raw": 0.11982,
+      "brier_cal": 0.0,
+      "ece_raw": 0.33876,
+      "ece_cal": 0.0002,
+      "n": 124,
+      "n_anom": 92,
+      "candidates": {
+        "platt": {
+          "brier": 0.0,
+          "ece": 0.0002
+        },
+        "isotonic": {
+          "brier": 7e-05,
+          "ece": 0.00107
+        }
+      }
+    },
+    "metal_nut": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.42848,
+          0.523472,
+          0.534415,
+          0.549044,
+          0.555484,
+          0.583401,
+          0.589385,
+          0.784597
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.6666666666666666,
+          0.6666666666666666,
+          0.8333333333333334,
+          0.8333333333333334,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.12864,
+      "brier_cal": 0.01866,
+      "ece_raw": 0.25766,
+      "ece_cal": 0.01604,
+      "n": 115,
+      "n_anom": 93,
+      "candidates": {
+        "platt": {
+          "brier": 0.0224,
+          "ece": 0.03556
+        },
+        "isotonic": {
+          "brier": 0.01866,
+          "ece": 0.01604
+        }
+      }
+    },
+    "pill": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 66.614460265046,
+        "b": -31.51436832952371
+      },
+      "brier_raw": 0.19757,
+      "brier_cal": 0.06056,
+      "ece_raw": 0.33476,
+      "ece_cal": 0.05664,
+      "n": 167,
+      "n_anom": 141,
+      "candidates": {
+        "platt": {
+          "brier": 0.06056,
+          "ece": 0.05664
+        },
+        "isotonic": {
+          "brier": 0.06277,
+          "ece": 0.05974
+        }
+      }
+    },
+    "screw": {
+      "method": "isotonic",
+      "calibrator": {
+        "method": "isotonic",
+        "x": [
+          0.312533,
+          0.345378,
+          0.346415,
+          0.350074,
+          0.350119,
+          0.353608,
+          0.355211,
+          0.362593,
+          0.362606,
+          0.383321,
+          0.384813,
+          0.410991,
+          0.413151,
+          0.491238
+        ],
+        "y": [
+          0.0,
+          0.0,
+          0.25,
+          0.25,
+          0.3333333333333333,
+          0.3333333333333333,
+          0.75,
+          0.75,
+          0.8,
+          0.8,
+          0.9565217391304348,
+          0.9565217391304348,
+          1.0,
+          1.0
+        ]
+      },
+      "brier_raw": 0.29679,
+      "brier_cal": 0.07751,
+      "ece_raw": 0.35509,
+      "ece_cal": 0.03904,
+      "n": 160,
+      "n_anom": 119,
+      "candidates": {
+        "platt": {
+          "brier": 0.08158,
+          "ece": 0.05197
+        },
+        "isotonic": {
+          "brier": 0.07751,
+          "ece": 0.03904
+        }
+      }
+    },
+    "tile": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 171.24053606894438,
+        "b": -90.56146824106702
+      },
+      "brier_raw": 0.12417,
+      "brier_cal": 0.00013,
+      "ece_raw": 0.3063,
+      "ece_cal": 0.00186,
+      "n": 117,
+      "n_anom": 84,
+      "candidates": {
+        "platt": {
+          "brier": 0.00013,
+          "ece": 0.00186
+        },
+        "isotonic": {
+          "brier": 0.00025,
+          "ece": 0.00159
+        }
+      }
+    },
+    "toothbrush": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 34.18017972287688,
+        "b": -16.311086236468118
+      },
+      "brier_raw": 0.15075,
+      "brier_cal": 0.08109,
+      "ece_raw": 0.19502,
+      "ece_cal": 0.10845,
+      "n": 42,
+      "n_anom": 30,
+      "candidates": {
+        "platt": {
+          "brier": 0.08109,
+          "ece": 0.10845
+        },
+        "isotonic": {
+          "brier": 0.09272,
+          "ece": 0.0927
+        }
+      }
+    },
+    "transistor": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 110.92618784271772,
+        "b": -60.48738722453888
+      },
+      "brier_raw": 0.19481,
+      "brier_cal": 0.03034,
+      "ece_raw": 0.32239,
+      "ece_cal": 0.03522,
+      "n": 100,
+      "n_anom": 40,
+      "candidates": {
+        "platt": {
+          "brier": 0.03034,
+          "ece": 0.03522
+        },
+        "isotonic": {
+          "brier": 0.04468,
+          "ece": 0.04349
+        }
+      }
+    },
+    "wood": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 39.17879896879067,
+        "b": -22.202267446161738
+      },
+      "brier_raw": 0.11338,
+      "brier_cal": 0.0426,
+      "ece_raw": 0.25859,
+      "ece_cal": 0.05903,
+      "n": 79,
+      "n_anom": 60,
+      "candidates": {
+        "platt": {
+          "brier": 0.0426,
+          "ece": 0.05903
+        },
+        "isotonic": {
+          "brier": 0.05915,
+          "ece": 0.05683
+        }
+      }
+    },
+    "zipper": {
+      "method": "platt",
+      "calibrator": {
+        "method": "platt",
+        "a": 65.16055917153562,
+        "b": -24.014849963853322
+      },
+      "brier_raw": 0.22043,
+      "brier_cal": 0.03752,
+      "ece_raw": 0.32749,
+      "ece_cal": 0.03428,
+      "n": 151,
+      "n_anom": 119,
+      "candidates": {
+        "platt": {
+          "brier": 0.03752,
+          "ece": 0.03428
+        },
+        "isotonic": {
+          "brier": 0.03931,
+          "ece": 0.0431
+        }
+      }
+    }
+  }
+}

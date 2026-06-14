@@ -6,6 +6,7 @@ import { useArena } from '../../stores/arena';
 import { ConfigPanel } from './ConfigPanel';
 import { LiveGrid } from './LiveGrid';
 import { StatusBar, SummaryPanel } from './SummaryPanel';
+import { ComparePanel } from './ComparePanel';
 import { SingleTest } from './SingleTest';
 import { InfoNote } from '../../components/InfoNote';
 
@@ -69,6 +70,7 @@ export default function Arena() {
           <ConfigPanel />
           <StatusBar />
           <SummaryPanel />
+          <ComparePanel />
           <LiveGrid />
         </div>
       ) : (

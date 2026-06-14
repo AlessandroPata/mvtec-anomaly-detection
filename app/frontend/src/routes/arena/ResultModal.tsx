@@ -10,7 +10,7 @@ export function ResultModal({ idx, onClose }: { idx: number | null; onClose: () 
   const { images, results, config } = useArena();
   const img = idx == null ? undefined : images.find((i) => i.idx === idx);
   const res = idx == null ? undefined : results[idx];
-  const [heat, setHeat] = useState<{ idx: number; b64: string | null } | null>(null);
+  const [heat, setHeat] = useState<{ idx: number; b64: string | null; calProb: number | null } | null>(null);
   const [showHeat, setShowHeat] = useState(true);
   const [opacity, setOpacity] = useState(0.55);
 
@@ -19,10 +19,11 @@ export function ResultModal({ idx, onClose }: { idx: number | null; onClose: () 
     if (idx == null || !img || !res || res.verdict === 'error') return;
     let cancelled = false;
     predictFromDataset(config.category, img.defect_type, img.filename, config.variant)
-      .then((p) => { if (!cancelled) setHeat({ idx, b64: p.heatmap_base64 }); })
-      .catch(() => { if (!cancelled) setHeat({ idx, b64: null }); });
+      .then((p) => { if (!cancelled) setHeat({ idx, b64: p.heatmap_base64, calProb: p.calibrated_probability ?? null }); })
+      .catch(() => { if (!cancelled) setHeat({ idx, b64: null, calProb: null }); });
     return () => { cancelled = true; };
   }, [idx]);  // eslint-disable-line react-hooks/exhaustive-deps
+  const calProb = heat?.idx === idx ? heat.calProb : null;
   const heatmap = wantHeat && heat?.idx === idx ? heat.b64 : null;
   const loading = wantHeat && heat?.idx !== idx;
 
@@ -39,6 +40,11 @@ export function ResultModal({ idx, onClose }: { idx: number | null; onClose: () 
               style={{ opacity, filter: 'sepia(1) saturate(6) hue-rotate(-50deg)' }} />
           )}
           {loading && <div className="absolute inset-0 grid place-items-center bg-ink/40 text-xs text-steel">computing heatmap…</div>}
+          {showHeat && heatmap && (
+            <div className="absolute bottom-0 inset-x-0 bg-ink/70 px-2 py-1 text-[10px] text-fog/90 pointer-events-none">
+              anomaly heatmap — brighter = higher per-pixel anomaly score (distance to the nearest normal patch)
+            </div>
+          )}
         </div>
         <div className="space-y-4">
           <div>
@@ -56,6 +62,11 @@ export function ResultModal({ idx, onClose }: { idx: number | null; onClose: () 
           <dl className="text-sm space-y-1.5">
             {res?.anomaly_probability != null && (
               <div className="flex justify-between"><dt className="text-steel">anomaly probability</dt><dd className="num">{(res.anomaly_probability * 100).toFixed(1)}%</dd></div>
+            )}
+            {calProb != null && (
+              <div className="flex justify-between" title="post-hoc calibrated P(anomaly) — Platt/isotonic on held-out data">
+                <dt className="text-steel">calibrated probability</dt><dd className="num text-accent">{(calProb * 100).toFixed(1)}%</dd>
+              </div>
             )}
             {res?.inference_ms != null && (
               <div className="flex justify-between"><dt className="text-steel">inference</dt><dd className="num">{res.inference_ms.toFixed(0)} ms</dd></div>
