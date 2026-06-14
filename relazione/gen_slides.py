@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Genera PRESENTAZIONE_v2.pptx: la cronologia del progetto in 19 slide (16:9)."""
+"""Genera PRESENTAZIONE_v2.pptx: la cronologia del progetto in 20 slide (16:9)."""
 from pathlib import Path
 
 from PIL import Image
@@ -442,7 +442,17 @@ card(s, x0 + cw + gap, 5.55, cw, 1.0, "0.9127", "AUPRO@30% (ufficiale MVTec)", G
 card(s, x0 + 2 * (cw + gap), 5.55, cw, 1.0, "0.954", "accuratezza onesta (held-out)", BLUE)
 takeaway(s, [("Misurare l'operating point, non solo il ranking: l'AUROC era giusta, la soglia no.", dict(size=14, color=DARK, bold=True))])
 
-# ---------------------------------------------------------------- 19 · scelte di efficienza
+# ---------------------------------------------------------------- 19 · robustezza
+s = content_slide("Deployment · Robustezza", "Tiene quando il sensore peggiora?", accent=GREEN)
+pic_fit(s, FIG / "fig_robustness.png", 0.6, 1.6, 12.13, 4.8)
+takeaway(s, [("Pulito 0.9804. Blur, luminosita' e contrasto costano <1.2 punti anche a severita' massima; ",
+              dict(size=13.5, color=INK)),
+             ("solo il rumore additivo erode (-6.4 pt), trainato da zipper e capsule. ",
+              dict(size=13.5, color=DARK, bold=True)),
+             ("Robusto allo shift fotometrico; un denoising a monte coprirebbe il resto.",
+              dict(size=13.5, color=INK))])
+
+# ---------------------------------------------------------------- 20 · scelte di efficienza
 s = content_slide("Scelte di efficienza", "Cosa NON abbiamo aggiunto — e perché", accent=GREEN)
 tf = textbox(s, 0.6, 1.75, 12.13, 3.0)
 bullets(tf, [

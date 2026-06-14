@@ -21,7 +21,7 @@
 9. [La webapp dimostrativa](#9-la-webapp-dimostrativa)
 10. [Conclusioni e sviluppi futuri](#10-conclusioni-e-sviluppi-futuri)
 
-Appendici: [A — Tabelle complete](#appendice-a--tabelle-complete) · [B — Riproducibilità](#appendice-b--riproducibilità)
+Appendici: [A — Tabelle complete](#appendice-a--tabelle-complete) · [B — Riproducibilità](#appendice-b--riproducibilità) · [C — Robustezza e calibrazione (figure)](#appendice-c--robustezza-e-calibrazione-figure)
 
 ---
 
@@ -538,6 +538,19 @@ L'AUROC image-level risponde a "questa immagine è anomala?", ma MVTec AD nasce 
 
 Due osservazioni rendono il quadro onesto. La prima è che **pixel-AP è molto più bassa di pixel-AUROC** (0.51 vs 0.97) non per un difetto del modello, ma perché i pixel di difetto sono una frazione minima dell'immagine (spesso <3%, fino allo 0.25% di screw): su un problema così sbilanciato l'average precision è severissima per costruzione. La seconda è che **AUPRO** è la metrica su cui il benchmark è costruito, perché *pesa ogni regione difettosa connessa allo stesso modo* — un graffio di due pixel conta quanto una macchia grande — evitando che pochi difetti estesi dominino la media: il nostro 0.9127 macro è in linea con lo ~0.93 riportato dal paper PatchCore. La tabella completa per categoria è in appendice A.4; le tre metriche sono esposte anche nella pagina Evaluation della webapp.
 
+## 7.6 Robustezza alla corruzione dell'input
+
+Il benchmark pulito risponde a "quanto è bravo il modello sulle foto del test set?", ma una linea di produzione reale ha lampade che si abbassano, sensori che introducono rumore, messe a fuoco imperfette. Poiché PatchCore confronta feature ImageNet *congelate*, la sua robustezza è esattamente quella di quelle feature allo shift: l'abbiamo misurata direttamente (`robustness_sweep.py`) riscorando l'intero test set sotto quattro corruzioni a severità crescente — rumore gaussiano additivo, sfocatura gaussiana, oscuramento progressivo e perdita di contrasto — lasciando invariate le etichette, così che a muoversi sia solo la distribuzione dei punteggi.
+
+| Corruzione | sev 1 | sev 2 | sev 3 | calo @ sev 3 |
+|---|---|---|---|---|
+| rumore gaussiano | 0.9544 | 0.9383 | 0.9160 | −0.0644 |
+| sfocatura | 0.9792 | 0.9754 | 0.9685 | −0.0119 |
+| luminosità (−) | 0.9787 | 0.9741 | 0.9706 | −0.0098 |
+| contrasto (−) | 0.9785 | 0.9767 | 0.9727 | −0.0077 |
+
+Partendo da un macro AUROC pulito di **0.9804**, il sistema è notevolmente stabile su tre delle quattro corruzioni: sfocatura, oscuramento e perdita di contrasto costano meno di **1.2 punti** anche alla severità massima — le feature convoluzionali pre-addestrate sono invarianti per costruzione a questi gradi di illuminazione e blur. L'unica vulnerabilità reale è il **rumore additivo** (−6.4 punti a sev 3), e l'analisi per categoria (figura 17, appendice C) ne isola la causa: il calo macro è dominato da due categorie a texture fine, **zipper** (0.985 → 0.612) e **capsule** (0.951 → 0.721), dove il rumore pixel-level genera micro-pattern che il bank legge come difetti; le categorie a oggetto rigido (bottle, leather, tile) restano sopra 0.99. È un risultato a doppia valenza: rassicurante sullo shift fotometrico, ma con un'indicazione operativa chiara — un denoising leggero a monte sarebbe il primo accorgimento da aggiungere prima di un deployment con sensori rumorosi. La curva di degradazione completa è in **figura 17 (appendice C)**.
+
 ---
 # 8. Problemi, sfide e lezioni imparate
 
@@ -589,7 +602,7 @@ Calibrare la soglia di PatchCore sugli stessi dati del bank produce soglie assur
 
 **Quanto è onesto quel numero? Oracle vs. held-out.** La soglia best-F1, però, è scelta *guardando le etichette del test*: è un *oracle*, e può solo sovrastimare l'accuratezza dispiegabile. Poiché MVTec non fornisce anomalie di validazione etichettate, l'abbiamo stimata onestamente con una cross-validation stratificata a 5 fold (`honest_calibration.py`): la soglia si sceglie sui fold di calibrazione e l'accuratezza si misura sul fold tenuto fuori. Il risultato è rassicurante — l'oracle macro vale **0.9676**, la stima onesta held-out **0.9540**, con un divario di soli **+1.37 punti**: l'operating point per-categoria è *stabile*, non un artefatto da test set. Per contrasto, la regola puramente non supervisionata (p99 dei soli punteggi normali, che non vede mai un'anomalia) si ferma a **0.8736** macro e collassa proprio dove serve — capsule 0.52, screw 0.53, grid 0.81. La soglia best-F1 per categoria è dunque il compromesso onesto tra l'oracle ottimista e il p99 cieco; il numero da dichiarare come accuratezza *dispiegabile* è quello held-out, non l'oracle.
 
-**Dalla soglia alla probabilità.** Soglia e accuratezza riguardano la *decisione*; resta il problema di trasformare lo score grezzo in una *probabilità* leggibile. Uno score PatchCore è monotòno con l'anomalia ma non è una probabilità: l'errore di calibrazione atteso (ECE) sui punteggi grezzi vale 0.316 — un punteggio di 0.8 è lontanissimo dal significare "80% di probabilità di difetto". Con una calibrazione post-hoc per categoria — Platt (sigmoide) o isotonica, scelta per categoria sul Brier in cross-validation (`calibrate_probabilities.py`) — la qualità migliora di un ordine di grandezza: **Brier macro 0.176 → 0.034** ed **ECE 0.316 → 0.033**, sempre misurati su fold tenuti fuori. Il calibratore è salvato in forma *version-independent* (coefficienti della sigmoide / breakpoint per `np.interp`) e applicato dal vivo dal server, che ora affianca allo score una probabilità calibrata; la qualità di calibrazione è esposta nella pagina Evaluation.
+**Dalla soglia alla probabilità.** Soglia e accuratezza riguardano la *decisione*; resta il problema di trasformare lo score grezzo in una *probabilità* leggibile. Uno score PatchCore è monotòno con l'anomalia ma non è una probabilità: l'errore di calibrazione atteso (ECE) sui punteggi grezzi vale 0.316 — un punteggio di 0.8 è lontanissimo dal significare "80% di probabilità di difetto". Con una calibrazione post-hoc per categoria — Platt (sigmoide) o isotonica, scelta per categoria sul Brier in cross-validation (`calibrate_probabilities.py`) — la qualità migliora di un ordine di grandezza: **Brier macro 0.176 → 0.034** ed **ECE 0.316 → 0.033**, sempre misurati su fold tenuti fuori. Il calibratore è salvato in forma *version-independent* (coefficienti della sigmoide / breakpoint per `np.interp`) e applicato dal vivo dal server, che ora affianca allo score una probabilità calibrata; la qualità di calibrazione è esposta nella pagina Evaluation e sintetizzata dal *reliability diagram* di **figura 16 (appendice C)**, dove i punteggi grezzi cadono lontano dalla diagonale di perfetta calibrazione mentre la curva calibrata vi si appoggia (ECE *pooled* 0.166 → 0.004).
 
 **Corollario: ogni intervento che cambia i punteggi va ricalibrato e validato.** Lo stesso principio ha bocciato un'idea apparentemente sensata. Poiché screw è rotation-variant, è stato testato se mediare il punteggio su quattro rotazioni della query (0/90/180/270°) ne migliorasse l'AUROC: l'effetto è il contrario — screw scende da 0.930 a 0.888, grid da 0.958 a 0.947 — perché il bank contiene già viti nelle loro orientazioni naturali, e ruotare la query verso angoli mai visti fa sembrare anomale anche le immagini normali. La TTA non è stata integrata: un promemoria che qualunque modifica ai punteggi richiede di rifare la calibrazione e di validarla su dati tenuti fuori, prima di adottarla.
 
@@ -771,11 +784,23 @@ La convenzione di naming dei run è `{categoria}_{t}_{m}_{lf}_{mp}_{oc}_s{seed}_
 
 Le fonti di ogni numero della relazione sono i dati aggregati seguenti: per la famiglia GAN, `final_per_category_multiseed_aggregated.csv` e `optv2_multiseed_aggregated.csv`; per la famiglia PatchCore, `logs/patchcore_pure.csv` (v1), `patchcore_tuning.csv`, `patchcore_v2.csv`, `patchcore_lc.csv` (coreset 50k), `patchcore_v3.csv` e `patchcore_p1*.csv` (ablation layer1); infine `frontend/src/data/benchmarks.json`, l'aggregato unico generato dai CSV reali tramite `scripts/build_webapp_data.py`, con i macro verificati: final 0.8276, optv2 0.8378, v1 0.9051, v2 0.9397, v3 0.9828, production 0.9846.
 
-Le metriche di localizzazione e di hardening (sezioni 7.5, 8.9, 9.1) provengono da artefatti dedicati, generati dal vivo dai modelli di produzione e versionati in `production_models/`: `pixel_metrics.json` (pixel-AUROC, pixel-AP, AUPRO), `honest_calibration.json` (oracle vs. held-out vs. p99), `probability_calibration.json` (Brier/ECE, calibratori per categoria) ed `ensemble_experiment.json` (studio di fusione GAN↔PatchCore), prodotti rispettivamente da `pixel_metrics.py`, `honest_calibration.py`, `calibrate_probabilities.py` ed `ensemble_experiment.py`.
+Le metriche di localizzazione, di robustezza e di hardening (sezioni 7.5, 7.6, 8.9, 9.1) provengono da artefatti dedicati, generati dal vivo dai modelli di produzione e versionati in `production_models/`: `pixel_metrics.json` (pixel-AUROC, pixel-AP, AUPRO), `honest_calibration.json` (oracle vs. held-out vs. p99), `probability_calibration.json` (Brier/ECE, calibratori per categoria), `robustness_sweep.json` (AUROC per categoria sotto corruzione) ed `ensemble_experiment.json` (studio di fusione GAN↔PatchCore), prodotti rispettivamente da `pixel_metrics.py`, `honest_calibration.py`, `calibrate_probabilities.py`, `robustness_sweep.py` ed `ensemble_experiment.py`. Le figure 16 e 17 (appendice C) sono generate da `gen_reliability_diagram.py` e dai dati di `robustness_sweep.json`.
 
 Le figure e le tabelle di questa relazione sono generate da `relazione/gen_figures.py` e `relazione/gen_tables.py` esclusivamente a partire dalle fonti sopra elencate: nessun numero è inserito a mano, se non quelli del paper OCGAN e della campagna 1, citati dal diario di progetto.
 
 Una nota di fedeltà per chiudere: tutti i run cloud puntano allo stesso commit git (`e4d4a3f`), ma con drift locale non committato sull'istanza (sezione 8.7). È la ragione per cui la riproducibilità *bit-exact* della calibrazione optv2 è stata sostituita da una ricalibrazione dichiarata al load.
+
+---
+
+# Appendice C — Robustezza e calibrazione (figure)
+
+Le due figure seguenti completano i risultati delle sezioni 8.9 (calibrazione delle probabilità) e 7.6 (robustezza alla corruzione dell'input); sono raccolte qui per non spezzare il filo del discorso ma sono parte integrante di quei risultati.
+
+![Reliability diagram](figures/fig_reliability.png)
+*Figura 16 — Reliability diagram del PatchCore di produzione, punteggi messi in pool sulle 15 categorie. Ogni curva lega la probabilità predetta (asse x) alla frazione osservata di anomalie (asse y); la diagonale è la calibrazione perfetta. I punteggi grezzi (in rosso) sono sistematicamente lontani dalla diagonale — la rete ordina bene ma le sue "probabilità" non sono affidabili — mentre la calibrazione post-hoc per categoria (in verde) vi si appoggia, abbattendo l'ECE pooled da 0.166 a 0.004 (n = 1725). Generata da `gen_reliability_diagram.py`.*
+
+![Robustezza alla corruzione](figures/fig_robustness.png)
+*Figura 17 — Degradazione del macro AUROC image-level (15 categorie) sotto quattro corruzioni dell'input a severità crescente. Partendo dal valore pulito (0.9804, linea tratteggiata), sfocatura, oscuramento e perdita di contrasto restano entro ~1 punto fino alla severità massima; solo il rumore gaussiano additivo erode in modo visibile (−6.4 punti a sev 3), trainato dalle categorie a texture fine (zipper, capsule). Dati da `robustness_sweep.json` (tabella in sezione 7.6, dettaglio per categoria nel JSON).*
 
 ---
 
