@@ -29,7 +29,7 @@ jobs:
           python -m pip install --upgrade pip
           # CPU-only torch keeps the runner light; the fast tests never touch CUDA.
           pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
-          pip install numpy scipy scikit-learn pillow pyyaml omegaconf fastapi "uvicorn[standard]" pytest pytorch-msssim
+          pip install numpy scipy scikit-learn pillow pyyaml omegaconf fastapi "uvicorn[standard]" python-multipart pytest pytorch-msssim
 
       - name: Run regression tests
         run: pytest tests/test_metrics_regression.py -q
