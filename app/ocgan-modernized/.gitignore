@@ -25,9 +25,9 @@ checkpoints/
 results/
 artifacts/
 
-# Data
-data/
-datasets/
+# Data caches (NOTE: do NOT ignore datasets/ here — in this repo layout
+# app/ocgan-modernized/datasets/ is the Python package, not the MVTec data;
+# the licensed dataset lives at the repo root and is ignored there.)
 cache/
 .thumb_cache/
 .gan_cache/

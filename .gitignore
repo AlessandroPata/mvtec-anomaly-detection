@@ -36,11 +36,13 @@ app/ocgan-modernized/honest_calibration_results.md
 app/ocgan-modernized/ensemble_experiment_results.md
 
 # ---- Dataset (licensed, not redistributed — download from MVTec) ----
-datasets/
+# Leading slash anchors to repo root so it does NOT match the local Python
+# package app/ocgan-modernized/datasets/ (that one must stay in the repo).
+/datasets/
 
 # ---- Heavy training artefacts (not needed to run the webapp) ----
-outputs/
-_archive/
+/outputs/
+/_archive/
 
 # ---- Model weights (6.5 GB total; 29 files exceed GitHub's 100 MB limit) ----
 # Excluded from git: rebuild the PatchCore memory banks with the project scripts,
