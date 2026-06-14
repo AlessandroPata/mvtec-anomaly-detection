@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"/.git$\")",
+      "Bash(awk -F/ '{print $1\"/\"$2\"/\"$3}')",
+      "Skill(run)",
+      "Bash(python -c \"import torch,scipy; print\\('torch', torch.__version__, 'cuda', torch.cuda.is_available\\(\\), torch.cuda.get_device_name\\(0\\) if torch.cuda.is_available\\(\\) else ''\\); print\\('scipy', scipy.__version__\\)\")"
+    ]
+  }
+}

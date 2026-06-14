@@ -1,0 +1,212 @@
+{
+  "bottle": {
+    "patchcore_v2": {
+      "threshold": 0.6257494151592254,
+      "score_mean": 0.603168745194712,
+      "score_std": 0.008550044172040137,
+      "n_val": 31
+    },
+    "patchcore_v1": {
+      "threshold": 0.6941690981388092,
+      "score_mean": 0.6876380597391436,
+      "score_std": 0.0026473264701276024,
+      "n_val": 31
+    }
+  },
+  "cable": {
+    "patchcore_v2": {
+      "threshold": 0.626472806930542,
+      "score_mean": 0.6058428269444089,
+      "score_std": 0.010429703243959577,
+      "n_val": 33
+    },
+    "patchcore_v1": {
+      "threshold": 0.6819915556907654,
+      "score_mean": 0.650245933821707,
+      "score_std": 0.01647904541333833,
+      "n_val": 33
+    }
+  },
+  "capsule": {
+    "patchcore_v2": {
+      "threshold": 0.6556186836957931,
+      "score_mean": 0.6264648251235485,
+      "score_std": 0.011997737830680727,
+      "n_val": 32
+    },
+    "patchcore_v1": {
+      "threshold": 0.7164084774255752,
+      "score_mean": 0.6841883212327957,
+      "score_std": 0.015015688333702652,
+      "n_val": 32
+    }
+  },
+  "carpet": {
+    "patchcore_v2": {
+      "threshold": 0.4429139220714569,
+      "score_mean": 0.39749783064637867,
+      "score_std": 0.017621760191391053,
+      "n_val": 42
+    },
+    "patchcore_v1": {
+      "threshold": 0.4992166355252266,
+      "score_mean": 0.41897546251614887,
+      "score_std": 0.028404019501692374,
+      "n_val": 42
+    }
+  },
+  "grid": {
+    "patchcore_v2": {
+      "threshold": 0.4685479801893234,
+      "score_mean": 0.4366954526840112,
+      "score_std": 0.01806450533466513,
+      "n_val": 39
+    },
+    "patchcore_v1": {
+      "threshold": 0.5014463293552398,
+      "score_mean": 0.45987674517509264,
+      "score_std": 0.02299820486184746,
+      "n_val": 39
+    }
+  },
+  "hazelnut": {
+    "patchcore_v2": {
+      "threshold": 0.7186924082040786,
+      "score_mean": 0.6911696801925528,
+      "score_std": 0.013680306690994862,
+      "n_val": 58
+    },
+    "patchcore_v1": {
+      "threshold": 0.7836180305480958,
+      "score_mean": 0.7511098456793818,
+      "score_std": 0.016149807383041295,
+      "n_val": 58
+    }
+  },
+  "leather": {
+    "patchcore_v2": {
+      "threshold": 0.46945094019174577,
+      "score_mean": 0.44461728715234333,
+      "score_std": 0.014893169963513612,
+      "n_val": 36
+    },
+    "patchcore_v1": {
+      "threshold": 0.563748425245285,
+      "score_mean": 0.5115410735209783,
+      "score_std": 0.032309500091637695,
+      "n_val": 36
+    }
+  },
+  "metal_nut": {
+    "patchcore_v2": {
+      "threshold": 0.6638473725318909,
+      "score_mean": 0.6405988769097761,
+      "score_std": 0.010788811970572403,
+      "n_val": 33
+    },
+    "patchcore_v1": {
+      "threshold": 0.7349770164489746,
+      "score_mean": 0.7104433196963686,
+      "score_std": 0.012844636897572854,
+      "n_val": 33
+    }
+  },
+  "pill": {
+    "patchcore_v2": {
+      "threshold": 0.6410497939586639,
+      "score_mean": 0.6208051055669784,
+      "score_std": 0.012170511020406193,
+      "n_val": 40
+    },
+    "patchcore_v1": {
+      "threshold": 0.7453118294477463,
+      "score_mean": 0.7080270543694496,
+      "score_std": 0.02069812227081387,
+      "n_val": 40
+    }
+  },
+  "screw": {
+    "patchcore_v2": {
+      "threshold": 0.46743131279945377,
+      "score_mean": 0.38585414985815686,
+      "score_std": 0.025164485490895065,
+      "n_val": 48
+    },
+    "patchcore_v1": {
+      "threshold": 0.5391145080327988,
+      "score_mean": 0.4146697136263053,
+      "score_std": 0.03669412841364576,
+      "n_val": 48
+    }
+  },
+  "tile": {
+    "patchcore_v2": {
+      "threshold": 0.5944364047050477,
+      "score_mean": 0.5232755173655117,
+      "score_std": 0.02171247317951749,
+      "n_val": 34
+    },
+    "patchcore_v1": {
+      "threshold": 0.6884270751476289,
+      "score_mean": 0.5647371726877549,
+      "score_std": 0.03939804225105658,
+      "n_val": 34
+    }
+  },
+  "toothbrush": {
+    "patchcore_v2": {
+      "threshold": 0.49822733998298646,
+      "score_mean": 0.429095768266254,
+      "score_std": 0.03538537835477701,
+      "n_val": 9
+    },
+    "patchcore_v1": {
+      "threshold": 0.5533245468139648,
+      "score_mean": 0.45161259836620754,
+      "score_std": 0.04773756306045633,
+      "n_val": 9
+    }
+  },
+  "transistor": {
+    "patchcore_v2": {
+      "threshold": 0.6449569821357727,
+      "score_mean": 0.6190968290452035,
+      "score_std": 0.019126325702246545,
+      "n_val": 31
+    },
+    "patchcore_v1": {
+      "threshold": 0.6746711969375611,
+      "score_mean": 0.6447835237749161,
+      "score_std": 0.020895427016557517,
+      "n_val": 31
+    }
+  },
+  "wood": {
+    "patchcore_v2": {
+      "threshold": 0.5598050045967102,
+      "score_mean": 0.5316370065147812,
+      "score_std": 0.014058319677874074,
+      "n_val": 37
+    },
+    "patchcore_v1": {
+      "threshold": 0.6274480414390564,
+      "score_mean": 0.5788174352130374,
+      "score_std": 0.020815263296558445,
+      "n_val": 37
+    }
+  },
+  "zipper": {
+    "patchcore_v2": {
+      "threshold": 0.6176853328943253,
+      "score_mean": 0.5889716562297609,
+      "score_std": 0.018416066522624102,
+      "n_val": 36
+    },
+    "patchcore_v1": {
+      "threshold": 0.6621679157018662,
+      "score_mean": 0.6367562926477857,
+      "score_std": 0.018928398690592766,
+      "n_val": 36
+    }
+  }
+}

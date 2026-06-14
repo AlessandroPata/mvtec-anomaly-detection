@@ -1,0 +1,589 @@
+=== Loaded config ===
+project:
+  name: ocgan-modernized
+  seed: 43
+  deterministic: false
+  device: cuda
+  output_dir: /notebooks/storage_project_outputs_datasets/outputs
+  experiment_name: bottle_optv2_s43
+score_fusion_learned:
+  enabled: true
+  method: logistic_regression
+  fit_split: val_mixed
+  use_normalized_components: true
+  max_iter: 1000
+  C: 2.0
+  cv_folds: 5
+score_normalization:
+  enabled: true
+  reference_split: val_normal
+  method: mad
+  eps: 1.0e-06
+feature_synthetic_anomalies:
+  enabled: true
+  mode: gaussian
+  probability: 0.5
+  target_level: layer4
+  gaussian_std: 0.1
+  mix_alpha: 0.5
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 1024
+  distance: l2
+  aggregation: max
+  score_weight: 0.4
+  selection_method: kcenter_greedy
+  kcenter_init: mean
+feature_discriminative:
+  enabled: true
+  weight: 0.1
+teacher_student:
+  enabled: true
+  loss_weight: 0.05
+  score_weight: 0.4
+  levels:
+  - layer3
+  - layer4
+discriminative:
+  enabled: false
+  map_loss_weight: 1.0
+  image_loss_weight: 0.5
+  threshold: 0.5
+synthetic_anomalies:
+  enabled: true
+  train_only: true
+  probability: 0.5
+  mode: perlin
+  min_patch_ratio: 0.1
+  max_patch_ratio: 0.3
+  perlin_octaves:
+  - 2
+  - 4
+  - 8
+  perlin_beta_range:
+  - 0.2
+  - 0.8
+mining_runtime:
+  enabled: true
+  warmup_epochs: 1
+  steps: 3
+  step_size: 0.1
+  noise_std: 0.01
+  clamp_value: 5.0
+score_fusion:
+  enabled: true
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  teacher_student_weight: 0.7
+  memory_weight: 0.4
+one_class:
+  enabled: true
+  score_weight: 0.0
+  loss_weight: 0.1
+preprocessing:
+  resize_mode: pad
+  interpolation: bilinear
+  antialias: true
+  pad_value: 0
+  center_crop: false
+latent_compactness:
+  enabled: true
+  weight: 0.1
+  momentum: 0.9
+  normalize_latent: false
+augmentations:
+  train:
+    enabled: true
+    hflip: false
+    rotation_deg: 5.0
+    color_jitter: true
+    brightness: 0.08
+    contrast: 0.08
+    gaussian_noise_std: 0.008
+    blur: false
+    blur_kernel: 3
+  eval:
+    enabled: false
+dataset:
+  name: mvtec_ad
+  root: /notebooks/storage_project_outputs_datasets/datasets/mvtec_ad
+  image_size: 256
+  category: bottle
+  val_normal_ratio: 0.2
+  val_mixed_ratio: 0.5
+  seed: 42
+  train_normal:
+    split: train_normal
+    batch_size: 8
+    num_workers: 4
+    length: 32
+    pin_memory: true
+    shuffle: true
+  val_normal:
+    split: val_normal
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  val_mixed:
+    split: val_mixed
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  test_blind:
+    split: test_blind
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+scoring_topk: 100
+model:
+  backbone:
+    name: resnet50
+    pretrained: true
+    frozen: true
+    unfreeze_from: layer3
+    unfreeze_lr_factor: 0.1
+  reconstruction:
+    enabled: true
+    name: base_reconstructor
+    use_skip_connections: true
+  latent:
+    enabled: true
+    name: compact_latent
+    dim: 128
+  discriminator:
+    enabled: false
+    name: base_discriminator
+  head:
+    enabled: true
+    name: base_head
+  mining:
+    enabled: false
+    name: base_miner
+  scoring:
+    reconstruction_score: true
+    perceptual_score: true
+    latent_score: false
+    memory_score: false
+    teacher_student_score: false
+    discriminative_score: false
+training:
+  epochs: 100
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  resume: false
+  resume_path: null
+  grad_clip_norm: 1.0
+  grad_accum_steps: 1
+optimizer:
+  name: adamw
+  lr: 0.0001
+  weight_decay: 1.0e-05
+scheduler:
+  enabled: true
+  name: cosine
+  warmup_epochs: 3
+  warmup_start_factor: 0.05
+  min_lr: 1.0e-06
+early_stopping:
+  enabled: true
+  monitor: val_selection_score
+  mode: max
+  patience: 5
+  min_delta: 0.001
+losses:
+  reconstruction:
+    use_l1: true
+    use_mse: false
+    use_ms_ssim: true
+    l1_weight: 1.0
+    mse_weight: 0.0
+    ms_ssim_weight: 1.0
+    data_range: 1.0
+  perceptual:
+    enabled: true
+    weight: 0.1
+    levels:
+    - layer2
+    - layer3
+    - layer4
+  latent_regularization:
+    weight: 0.01
+checkpoint:
+  save_last: true
+  save_best: true
+  monitor: val_selection_score
+  mode: max
+feature_discrepancy:
+  enabled: true
+  weight: 0.1
+  levels:
+  - global
+  - layer3
+  - layer4
+model_selection:
+  monitor_split: val_mixed
+  use_composite_score: true
+  composite_weights:
+    auroc: 0.5
+    auprc: 0.3
+    best_f1: 0.2
+normalization:
+  enabled: true
+  mode: imagenet
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+analysis:
+  save_failure_analysis: false
+anti_leakage:
+  exact_dedup: true
+  near_dedup: false
+  contamination_check: true
+  split_key: none
+  hash_algorithm: sha1
+runtime:
+  amp: true
+  detect_nan: true
+ema:
+  enabled: true
+  decay: 0.999
+debug:
+  overfit_one_batch: false
+  save_batch_shapes: true
+profiler:
+  enabled: false
+  profile_batches: 2
+  wait: 0
+  warmup: 1
+  active: 2
+  repeat: 1
+  record_shapes: true
+  profile_memory: true
+  with_stack: false
+distributed:
+  enabled: false
+  strategy: dp
+logging:
+  use_wandb: false
+  log_every_n_steps: 10
+  save_config: true
+  save_env_info: true
+  save_metrics_jsonl: true
+  save_epoch_summary_yaml: true
+  save_debug_images: true
+  debug_image_count: 4
+  save_score_histograms: true
+  histogram_bins: 30
+
+Run directory: /notebooks/storage_project_outputs_datasets/outputs/ocgan-modernized/bottle_optv2_s43_seed43_20260413_100607
+=== Trainer setup ===
+Project: ocgan-modernized
+Run dir: /notebooks/storage_project_outputs_datasets/outputs/ocgan-modernized/bottle_optv2_s43_seed43_20260413_100607
+Device: cuda
+Visible GPU count: 1
+Visible GPUs: ['Quadro RTX 5000']
+Dataset: mvtec_ad
+Backbone: resnet50
+Pretrained: True
+Frozen backbone: True
+Reconstruction enabled: True
+Latent enabled: True
+Head enabled: True
+Mining enabled: False
+Train loader built with 21 batches
+Val-normal loader built with 6 batches
+Val-mixed loader built with 6 batches
+Test-blind loader built with 6 batches
+[memory_bank] kcenter_greedy subsample -> kept 1024 patches (candidate_pool_size=None, init=mean)
+[memory_bank] level=layer3 patches=1024 dim=1024
+Optimizer: AdamW | lr=0.0001 | weight_decay=1e-05
+Scheduler: cosine | warmup_epochs=3 | warmup_start_factor=0.05 | min_lr=1e-06
+EMA: enabled | decay=0.999
+[val_normal_loader] batch_shape=(8, 3, 256, 256) anomaly_count=0 split=val_normal
+[val_mixed_loader] batch_shape=(8, 3, 256, 256) anomaly_count=6 split=val_mixed
+[test_loader] batch_shape=(8, 3, 256, 256) anomaly_count=7 split=test_blind
+=== Anti-leakage audit ===
+[train_normal] summary: {'num_samples': 16, 'label_counts': {0: 16}, 'anomaly_count': 0}
+[train_normal] exact_duplicates=0
+[val_normal] summary: {'num_samples': 16, 'label_counts': {0: 16}, 'anomaly_count': 0}
+[val_normal] exact_duplicates=0
+[val_mixed] summary: {'num_samples': 16, 'label_counts': {1: 11, 0: 5}, 'anomaly_count': 11}
+[val_mixed] exact_duplicates=0
+[test_blind] summary: {'num_samples': 16, 'label_counts': {1: 12, 0: 4}, 'anomaly_count': 12}
+[test_blind] exact_duplicates=0
+[cross-split overlaps] {'train_normal__val_normal': 0, 'train_normal__val_mixed': 0, 'train_normal__test_blind': 0, 'val_normal__val_mixed': 0, 'val_normal__test_blind': 0, 'val_mixed__test_blind': 0}
+[normalization] mode=imagenet mean=[0.485, 0.456, 0.406] std=[0.229, 0.224, 0.225]
+[train_loader] synthetic_batch_shape=(8, 3, 256, 256) synthetic_count=5
+=== Training loop ===
+[Epoch 1] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.527597 ms_ssim_loss=0.992129 feat_disc_loss=0.781057 perceptual_loss=0.589844 latent_compactness_loss=0.004320 one_class_loss=0.004320 recon_score=2.595026 perceptual_score=1.769012 feature_score=0.023396 latent_score=0.004320 mining_start_score=0.000000 mining_final_score=0.000000 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079834 feature_synth_ratio=1.000000 feature_disc_loss=0.693617 feature_disc_score=0.493652 memory_score=1.079102 teacher_student_loss=0.295898 teacher_student_score=0.295898 total_loss=2.741885
+Epoch 1/100 - lr=0.00000500 - avg_loss=2.740019 - avg_recon_loss=2.520760 - avg_l1_loss=1.523580 - avg_ms_ssim_loss=0.997180 - avg_feat_disc_loss=0.771711 - avg_perceptual_loss=0.589123 - avg_latent_compactness_loss=0.000615 - avg_one_class_loss=0.000615 - avg_recon_score=2.583673 - avg_perceptual_score=1.767456 - avg_feature_score=0.023299 - avg_latent_score=0.000615 - avg_mining_start_score=0.000000 - avg_mining_final_score=0.000000 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.740019 - time=38.114s - throughput=4.41 samples/s - vram_peak_mb=3007.65 - avg_feature_synth_score=0.079776 - avg_feature_synth_ratio=0.517857 - avg_feature_disc_loss=0.681264 - avg_feature_disc_score=0.487607 - avg_teacher_student_loss=0.297712 - avg_teacher_student_score=0.297689
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.491971 max=2.653408 mean=2.585351
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.260254 max=1.551758 mean=1.394993
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.061285 max=0.083010 mean=0.070917
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.001718 max=0.002703 mean=0.002218
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.017467 max=1.219340 mean=1.125757
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.218994 max=0.229248 mean=0.224255
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.591453 scale=0.024042
+[score_normalization] perceptual_score: median=1.397156 scale=0.052979
+[score_normalization] feature_score: median=0.071361 scale=0.002848
+[score_normalization] latent_score: median=0.002300 scale=0.000149
+[score_normalization] memory_score: median=1.141567 scale=0.023190
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.224121 scale=0.001221
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.3578187838706323, 0.914069681827299, 0.069751256888205, -0.6622629998193266, 0.4272898922461525, 0.0, 0.5389583991678497]] intercept=[-0.7252570094658142]
+[Validation] AUROC=0.9548 AUPRC=0.9826 best_F1=0.9687 best_threshold=0.458031 FPR@95TPR=0.1000 selection_score=0.9659
+New best checkpoint saved at epoch 1 with monitor=0.9659
+[EarlyStopping] improvement detected: best=0.9659
+[Scheduler] epoch=1 next_lr=0.00003667
+[Epoch 2] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.530419 ms_ssim_loss=0.989400 feat_disc_loss=0.786023 perceptual_loss=0.576660 latent_compactness_loss=0.000528 one_class_loss=0.000528 recon_score=2.601703 perceptual_score=1.729416 feature_score=0.024178 latent_score=0.000528 mining_start_score=0.000528 mining_final_score=0.102217 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079712 feature_synth_ratio=0.500000 feature_disc_loss=0.665077 feature_disc_score=0.472412 memory_score=1.109375 teacher_student_loss=0.296631 teacher_student_score=0.296631 total_loss=2.737592
+Epoch 2/100 - lr=0.00003667 - avg_loss=2.728436 - avg_recon_loss=2.516473 - avg_l1_loss=1.520525 - avg_ms_ssim_loss=0.995949 - avg_feat_disc_loss=0.762378 - avg_perceptual_loss=0.583752 - avg_latent_compactness_loss=0.000451 - avg_one_class_loss=0.000451 - avg_recon_score=2.575187 - avg_perceptual_score=1.751158 - avg_feature_score=0.022751 - avg_latent_score=0.000451 - avg_mining_start_score=0.000451 - avg_mining_final_score=0.101541 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.728436 - time=30.498s - throughput=5.51 samples/s - vram_peak_mb=1212.00 - avg_feature_synth_score=0.079747 - avg_feature_synth_ratio=0.535714 - avg_feature_disc_loss=0.624583 - avg_feature_disc_score=0.392822 - avg_teacher_student_loss=0.295154 - avg_teacher_student_score=0.295154
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.493479 max=2.650869 mean=2.582988
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.332642 max=1.363098 mean=1.349408
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.054090 max=0.069192 mean=0.059943
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.001549 max=0.002116 mean=0.001799
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.031386 max=1.047400 mean=1.038728
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.270020 max=0.280273 mean=0.274670
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.588373 scale=0.023948
+[score_normalization] perceptual_score: median=1.348999 scale=0.005432
+[score_normalization] feature_score: median=0.059508 scale=0.002983
+[score_normalization] latent_score: median=0.001769 scale=0.000090
+[score_normalization] memory_score: median=1.039109 scale=0.002468
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.274170 scale=0.001221
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.39627954163656764, -0.261797598490419, 1.1527718970310905, 0.3437189805513554, 1.513807804672543, 0.0, 0.6624191738507995]] intercept=[-1.7080281692174624]
+[Validation] AUROC=0.9903 AUPRC=0.9970 best_F1=0.9687 best_threshold=0.380694 FPR@95TPR=0.1000 selection_score=0.9880
+New best checkpoint saved at epoch 2 with monitor=0.9880
+[EarlyStopping] improvement detected: best=0.9880
+[Scheduler] epoch=2 next_lr=0.00006833
+[Epoch 3] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.518467 ms_ssim_loss=0.992855 feat_disc_loss=0.778298 perceptual_loss=0.583008 latent_compactness_loss=0.000548 one_class_loss=0.000548 recon_score=2.574452 perceptual_score=1.748978 feature_score=0.023956 latent_score=0.000548 mining_start_score=0.000548 mining_final_score=0.102902 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079834 feature_synth_ratio=0.500000 feature_disc_loss=0.574672 feature_disc_score=0.292725 memory_score=1.086914 teacher_student_loss=0.295166 teacher_student_score=0.295166 total_loss=2.719821
+Epoch 3/100 - lr=0.00006833 - avg_loss=2.714722 - avg_recon_loss=2.506722 - avg_l1_loss=1.515062 - avg_ms_ssim_loss=0.991660 - avg_feat_disc_loss=0.759126 - avg_perceptual_loss=0.580636 - avg_latent_compactness_loss=0.000509 - avg_one_class_loss=0.000509 - avg_recon_score=2.561264 - avg_perceptual_score=1.741922 - avg_feature_score=0.021752 - avg_latent_score=0.000509 - avg_mining_start_score=0.000509 - avg_mining_final_score=0.102295 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.714722 - time=32.938s - throughput=5.10 samples/s - vram_peak_mb=1212.17 - avg_feature_synth_score=0.079819 - avg_feature_synth_ratio=0.541667 - avg_feature_disc_loss=0.592188 - avg_feature_disc_score=0.271711 - avg_teacher_student_loss=0.293062 - avg_teacher_student_score=0.293062
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.483123 max=2.642194 mean=2.574424
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.319550 max=1.350952 mean=1.334496
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.038922 max=0.047725 mean=0.042919
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.001442 max=0.002013 mean=0.001727
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.026932 max=1.043643 mean=1.035507
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.267822 max=0.277832 mean=0.273062
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.580783 scale=0.024060
+[score_normalization] perceptual_score: median=1.334747 scale=0.004517
+[score_normalization] feature_score: median=0.041936 scale=0.001261
+[score_normalization] latent_score: median=0.001744 scale=0.000108
+[score_normalization] memory_score: median=1.035499 scale=0.002386
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.273193 scale=0.001953
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.5469869404908145, -0.28156798606951233, 0.01042016435289462, 0.8843672571178995, 1.1298621493407615, 0.0, 0.6978418763409618]] intercept=[-1.3673589582427235]
+/usr/local/lib/python3.11/dist-packages/torch/optim/lr_scheduler.py:149: UserWarning: The epoch parameter in `scheduler.step()` was not necessary and is being deprecated where possible. Please use `scheduler.step()` to step the scheduler. During the deprecation, if epoch is different from None, the closed form is used instead of the new chainable form, where available. Please open an issue if you are unable to replicate your use case: https://github.com/pytorch/pytorch/issues/new/choose.
+  warnings.warn(EPOCH_DEPRECATION_WARNING, UserWarning)
+[Validation] AUROC=0.9774 AUPRC=0.9941 best_F1=0.9836 best_threshold=0.711290 FPR@95TPR=0.0000 selection_score=0.9836
+[EarlyStopping] no improvement: counter=1/5 best=0.9880 current=0.9836
+[Scheduler] epoch=3 next_lr=0.00010000
+[Epoch 4] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.519333 ms_ssim_loss=0.998078 feat_disc_loss=0.766751 perceptual_loss=0.585938 latent_compactness_loss=0.000531 one_class_loss=0.000531 recon_score=2.574302 perceptual_score=1.757034 feature_score=0.020743 latent_score=0.000531 mining_start_score=0.000531 mining_final_score=0.102742 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079834 feature_synth_ratio=0.250000 feature_disc_loss=0.421284 feature_disc_score=0.254395 memory_score=1.083984 teacher_student_loss=0.293457 teacher_student_score=0.293457 total_loss=2.709635
+Epoch 4/100 - lr=0.00010000 - avg_loss=2.695711 - avg_recon_loss=2.491698 - avg_l1_loss=1.518098 - avg_ms_ssim_loss=0.973601 - avg_feat_disc_loss=0.752456 - avg_perceptual_loss=0.580357 - avg_latent_compactness_loss=0.000642 - avg_one_class_loss=0.000642 - avg_recon_score=2.571415 - avg_perceptual_score=1.741041 - avg_feature_score=0.020419 - avg_latent_score=0.000642 - avg_mining_start_score=0.000642 - avg_mining_final_score=0.103402 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.695711 - time=34.396s - throughput=4.88 samples/s - vram_peak_mb=1211.17 - avg_feature_synth_score=0.079802 - avg_feature_synth_ratio=0.482143 - avg_feature_disc_loss=0.559366 - avg_feature_disc_score=0.267712 - avg_teacher_student_loss=0.292318 - avg_teacher_student_score=0.292341
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.492008 max=2.652151 mean=2.584434
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.331696 max=1.367065 mean=1.350753
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.044719 max=0.055877 mean=0.049061
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.001937 max=0.002435 mean=0.002195
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.023736 max=1.039535 mean=1.032068
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.260254 max=0.273438 mean=0.267024
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.590042 scale=0.024957
+[score_normalization] perceptual_score: median=1.349670 scale=0.006195
+[score_normalization] feature_score: median=0.048608 scale=0.001465
+[score_normalization] latent_score: median=0.002209 scale=0.000106
+[score_normalization] memory_score: median=1.031852 scale=0.002404
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.267334 scale=0.001465
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.1619179239503009, 0.6702153125047001, -1.0073107028281478, 0.6002855789145222, 1.034240723015855, 0.0, 0.21225155553431266]] intercept=[-1.7021798829595156]
+[Validation] AUROC=0.9935 AUPRC=0.9980 best_F1=0.9841 best_threshold=0.376608 FPR@95TPR=0.1000 selection_score=0.9930
+New best checkpoint saved at epoch 4 with monitor=0.9930
+[EarlyStopping] improvement detected: best=0.9930
+[Scheduler] epoch=4 next_lr=0.00009997
+[Epoch 5] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.515905 ms_ssim_loss=0.962288 feat_disc_loss=0.744882 perceptual_loss=0.574219 latent_compactness_loss=0.000737 one_class_loss=0.000737 recon_score=2.565981 perceptual_score=1.723343 feature_score=0.018705 latent_score=0.000737 mining_start_score=0.000737 mining_final_score=0.103816 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079834 feature_synth_ratio=0.750000 feature_disc_loss=0.725912 feature_disc_score=0.252930 memory_score=1.085938 teacher_student_loss=0.291748 teacher_student_score=0.291748 total_loss=2.697506
+Epoch 5/100 - lr=0.00009997 - avg_loss=2.701115 - avg_recon_loss=2.498477 - avg_l1_loss=1.523961 - avg_ms_ssim_loss=0.974516 - avg_feat_disc_loss=0.747475 - avg_perceptual_loss=0.577288 - avg_latent_compactness_loss=0.000727 - avg_one_class_loss=0.000727 - avg_recon_score=2.581787 - avg_perceptual_score=1.731970 - avg_feature_score=0.019774 - avg_latent_score=0.000727 - avg_mining_start_score=0.000727 - avg_mining_final_score=0.104124 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.701115 - time=31.264s - throughput=5.37 samples/s - vram_peak_mb=1214.50 - avg_feature_synth_score=0.079787 - avg_feature_synth_ratio=0.476190 - avg_feature_disc_loss=0.554958 - avg_feature_disc_score=0.241763 - avg_teacher_student_loss=0.288865 - avg_teacher_student_score=0.288865
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.500611 max=2.664364 mean=2.595446
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.392700 max=1.429871 mean=1.412432
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.056808 max=0.086957 mean=0.069441
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.002879 max=0.003545 mean=0.003231
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.012930 max=1.043297 mean=1.021930
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.260986 max=0.271484 mean=0.266602
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.601440 scale=0.025153
+[score_normalization] perceptual_score: median=1.411621 scale=0.005310
+[score_normalization] feature_score: median=0.068275 scale=0.004621
+[score_normalization] latent_score: median=0.003210 scale=0.000102
+[score_normalization] memory_score: median=1.022027 scale=0.002114
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.266113 scale=0.001465
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.43276460165685265, -0.7173077068811207, 0.20980279177697558, -0.41004564590069126, 0.48733085058791964, 0.0, 0.562156950083287]] intercept=[-1.7100799304350058]
+[Validation] AUROC=0.9806 AUPRC=0.9948 best_F1=0.9836 best_threshold=0.838183 FPR@95TPR=0.0000 selection_score=0.9855
+[EarlyStopping] no improvement: counter=1/5 best=0.9930 current=0.9855
+[Scheduler] epoch=5 next_lr=0.00009990
+[Epoch 6] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.529218 ms_ssim_loss=0.987050 feat_disc_loss=0.745015 perceptual_loss=0.582031 latent_compactness_loss=0.000441 one_class_loss=0.000441 recon_score=2.593571 perceptual_score=1.745956 feature_score=0.017749 latent_score=0.000441 mining_start_score=0.000441 mining_final_score=0.101738 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079712 feature_synth_ratio=0.500000 feature_disc_loss=0.565782 feature_disc_score=0.236572 memory_score=1.085938 teacher_student_loss=0.288818 teacher_student_score=0.288818 total_loss=2.720148
+Epoch 6/100 - lr=0.00009990 - avg_loss=2.723500 - avg_recon_loss=2.524075 - avg_l1_loss=1.528786 - avg_ms_ssim_loss=0.995288 - avg_feat_disc_loss=0.716296 - avg_perceptual_loss=0.569429 - avg_latent_compactness_loss=0.000662 - avg_one_class_loss=0.000662 - avg_recon_score=2.594717 - avg_perceptual_score=1.708114 - avg_feature_score=0.017485 - avg_latent_score=0.000662 - avg_mining_start_score=0.000662 - avg_mining_final_score=0.103692 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.723500 - time=36.932s - throughput=4.55 samples/s - vram_peak_mb=1213.59 - avg_feature_synth_score=0.079782 - avg_feature_synth_ratio=0.476190 - avg_feature_disc_loss=0.559911 - avg_feature_disc_score=0.235631 - avg_teacher_student_loss=0.293050 - avg_teacher_student_score=0.293073
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.496065 max=2.659144 mean=2.590939
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.450195 max=1.496399 mean=1.472314
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.108708 max=0.128099 mean=0.116847
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.004582 max=0.005421 mean=0.004963
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.051162 max=1.076630 mean=1.063488
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.271973 max=0.284668 mean=0.278695
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.597811 scale=0.024696
+[score_normalization] perceptual_score: median=1.469788 scale=0.005615
+[score_normalization] feature_score: median=0.116963 scale=0.001968
+[score_normalization] latent_score: median=0.004923 scale=0.000137
+[score_normalization] memory_score: median=1.063636 scale=0.006135
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.278320 scale=0.001465
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.4613791187729612, 0.04517947021456293, -0.9384403889004898, 1.1176851366902598, 1.8208473203535582, 0.0, 0.49417519058360965]] intercept=[-3.3017342877840554]
+[Validation] AUROC=1.0000 AUPRC=1.0000 best_F1=1.0000 best_threshold=0.701088 FPR@95TPR=0.0000 selection_score=1.0000
+New best checkpoint saved at epoch 6 with monitor=1.0000
+[EarlyStopping] improvement detected: best=1.0000
+[Scheduler] epoch=6 next_lr=0.00009977
+[Epoch 7] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.518802 ms_ssim_loss=1.000000 feat_disc_loss=0.702668 perceptual_loss=0.550293 latent_compactness_loss=0.000495 one_class_loss=0.000495 recon_score=2.566058 perceptual_score=1.649757 feature_score=0.017048 latent_score=0.000495 mining_start_score=0.000495 mining_final_score=0.102081 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079712 feature_synth_ratio=0.500000 feature_disc_loss=0.586699 feature_disc_score=0.269287 memory_score=1.094727 teacher_student_loss=0.297852 teacher_student_score=0.297852 total_loss=2.717825
+Epoch 7/100 - lr=0.00009977 - avg_loss=2.705045 - avg_recon_loss=2.510985 - avg_l1_loss=1.513167 - avg_ms_ssim_loss=0.997817 - avg_feat_disc_loss=0.679827 - avg_perceptual_loss=0.555339 - avg_latent_compactness_loss=0.000615 - avg_one_class_loss=0.000615 - avg_recon_score=2.551607 - avg_perceptual_score=1.665760 - avg_feature_score=0.016576 - avg_latent_score=0.000615 - avg_mining_start_score=0.000615 - avg_mining_final_score=0.103014 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.705045 - time=33.033s - throughput=5.09 samples/s - vram_peak_mb=1212.12 - avg_feature_synth_score=0.079764 - avg_feature_synth_ratio=0.476190 - avg_feature_disc_loss=0.557125 - avg_feature_disc_score=0.269578 - avg_teacher_student_loss=0.292550 - avg_teacher_student_score=0.292515
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.459168 max=2.620390 mean=2.553616
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.475159 max=1.523254 mean=1.497795
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.091621 max=0.108003 mean=0.097405
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.003519 max=0.004284 mean=0.003866
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.088824 max=1.107839 mean=1.096983
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.274902 max=0.288086 mean=0.280095
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.560375 scale=0.024596
+[score_normalization] perceptual_score: median=1.495972 scale=0.007446
+[score_normalization] feature_score: median=0.097818 scale=0.001632
+[score_normalization] latent_score: median=0.003848 scale=0.000115
+[score_normalization] memory_score: median=1.096235 scale=0.002984
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.279541 scale=0.001221
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.26344931565183977, 0.01673168854225433, -1.3391552027071383, 1.7139941369809524, 1.1680651733664091, 0.0, 0.8477146355572672]] intercept=[-4.081559497789918]
+[Validation] AUROC=0.9968 AUPRC=0.9990 best_F1=0.9841 best_threshold=0.670269 FPR@95TPR=0.0000 selection_score=0.9949
+[EarlyStopping] no improvement: counter=1/5 best=1.0000 current=0.9949
+[Scheduler] epoch=7 next_lr=0.00009959
+[Epoch 8] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.495450 ms_ssim_loss=1.000000 feat_disc_loss=0.654639 perceptual_loss=0.551270 latent_compactness_loss=0.000565 one_class_loss=0.000565 recon_score=2.502512 perceptual_score=1.653366 feature_score=0.015846 latent_score=0.000565 mining_start_score=0.000565 mining_final_score=0.102837 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079773 feature_synth_ratio=0.625000 feature_disc_loss=0.636655 feature_disc_score=0.242554 memory_score=1.093750 teacher_student_loss=0.291016 teacher_student_score=0.291016 total_loss=2.694436
+Epoch 8/100 - lr=0.00009959 - avg_loss=2.668966 - avg_recon_loss=2.479121 - avg_l1_loss=1.482326 - avg_ms_ssim_loss=0.996795 - avg_feat_disc_loss=0.653181 - avg_perceptual_loss=0.545061 - avg_latent_compactness_loss=0.000539 - avg_one_class_loss=0.000539 - avg_recon_score=2.476124 - avg_perceptual_score=1.634941 - avg_feature_score=0.015822 - avg_latent_score=0.000539 - avg_mining_start_score=0.000539 - avg_mining_final_score=0.102515 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.668966 - time=33.165s - throughput=5.07 samples/s - vram_peak_mb=1213.69 - avg_feature_synth_score=0.079811 - avg_feature_synth_ratio=0.488095 - avg_feature_disc_loss=0.555566 - avg_feature_disc_score=0.235857 - avg_teacher_student_loss=0.285563 - avg_teacher_student_score=0.285563
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.383295 max=2.542948 mean=2.477689
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.443787 max=1.491638 mean=1.466812
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.036415 max=0.075098 mean=0.051736
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.003065 max=0.003724 mean=0.003333
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.060277 max=1.080389 mean=1.069740
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.271484 max=0.281738 mean=0.277308
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.484188 scale=0.025004
+[score_normalization] perceptual_score: median=1.467407 scale=0.009033
+[score_normalization] feature_score: median=0.051168 scale=0.005074
+[score_normalization] latent_score: median=0.003331 scale=0.000094
+[score_normalization] memory_score: median=1.068971 scale=0.003472
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.276855 scale=0.001953
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.22407268473994085, -0.04152630205282718, -1.3560603173995542, 0.3738147871501353, 0.8290022907124561, 0.0, 0.6004744071468238]] intercept=[-3.959302001854899]
+[Validation] AUROC=0.9839 AUPRC=0.9953 best_F1=0.9677 best_threshold=0.602395 FPR@95TPR=0.1000 selection_score=0.9841
+[EarlyStopping] no improvement: counter=2/5 best=1.0000 current=0.9841
+[Scheduler] epoch=8 next_lr=0.00009935
+[Epoch 9] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.463323 ms_ssim_loss=0.990664 feat_disc_loss=0.673899 perceptual_loss=0.549805 latent_compactness_loss=0.000723 one_class_loss=0.000723 recon_score=2.427263 perceptual_score=1.649612 feature_score=0.016385 latent_score=0.000723 mining_start_score=0.000723 mining_final_score=0.103243 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079590 feature_synth_ratio=0.750000 feature_disc_loss=0.741305 feature_disc_score=0.240112 memory_score=1.080078 teacher_student_loss=0.281250 teacher_student_score=0.281250 total_loss=2.664782
+Epoch 9/100 - lr=0.00009935 - avg_loss=2.628749 - avg_recon_loss=2.439008 - avg_l1_loss=1.443871 - avg_ms_ssim_loss=0.995137 - avg_feat_disc_loss=0.655636 - avg_perceptual_loss=0.541969 - avg_latent_compactness_loss=0.000537 - avg_one_class_loss=0.000537 - avg_recon_score=2.382131 - avg_perceptual_score=1.625964 - avg_feature_score=0.015451 - avg_latent_score=0.000537 - avg_mining_start_score=0.000537 - avg_mining_final_score=0.102309 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.628749 - time=35.397s - throughput=4.75 samples/s - vram_peak_mb=1212.78 - avg_feature_synth_score=0.079785 - avg_feature_synth_ratio=0.482143 - avg_feature_disc_loss=0.560473 - avg_feature_disc_score=0.256324 - avg_teacher_student_loss=0.275030 - avg_teacher_student_score=0.275053
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.328571 max=2.480948 mean=2.416069
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=1.441895 max=1.488464 mean=1.468991
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.046949 max=0.058177 mean=0.051823
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.001903 max=0.002411 mean=0.002170
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.018539 max=1.074041 mean=1.034328
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.263916 max=0.275635 mean=0.269704
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.420099 scale=0.024775
+[score_normalization] perceptual_score: median=1.469238 scale=0.005066
+[score_normalization] feature_score: median=0.051456 scale=0.001985
+[score_normalization] latent_score: median=0.002188 scale=0.000124
+[score_normalization] memory_score: median=1.033517 scale=0.005985
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.269043 scale=0.001221
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.5018168766397065, 0.37842505004727683, -0.9589374704854075, 0.006554212461020608, 1.1306564400131285, 0.0, 0.09451725044942609]] intercept=[-3.3405711447063275]
+[Validation] AUROC=0.9806 AUPRC=0.9948 best_F1=0.9836 best_threshold=0.708262 FPR@95TPR=0.0000 selection_score=0.9855
+[EarlyStopping] no improvement: counter=3/5 best=1.0000 current=0.9855
+[Scheduler] epoch=9 next_lr=0.00009907
+[Epoch 10] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.417433 ms_ssim_loss=1.000000 feat_disc_loss=0.649233 perceptual_loss=0.548340 latent_compactness_loss=0.000400 one_class_loss=0.000400 recon_score=2.317590 perceptual_score=1.644341 feature_score=0.013673 latent_score=0.000400 mining_start_score=0.000400 mining_final_score=0.101073 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079773 feature_synth_ratio=0.500000 feature_disc_loss=0.582118 feature_disc_score=0.244019 memory_score=1.091797 teacher_student_loss=0.264404 teacher_student_score=0.264404 total_loss=2.608780
+Epoch 10/100 - lr=0.00009907 - avg_loss=2.577521 - avg_recon_loss=2.394553 - avg_l1_loss=1.397541 - avg_ms_ssim_loss=0.997012 - avg_feat_disc_loss=0.632137 - avg_perceptual_loss=0.537365 - avg_latent_compactness_loss=0.000451 - avg_one_class_loss=0.000451 - avg_recon_score=2.268096 - avg_perceptual_score=1.612053 - avg_feature_score=0.015057 - avg_latent_score=0.000451 - avg_mining_start_score=0.000451 - avg_mining_final_score=0.101572 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.577521 - time=35.303s - throughput=4.76 samples/s - vram_peak_mb=1213.59 - avg_feature_synth_score=0.079822 - avg_feature_synth_ratio=0.428571 - avg_feature_disc_loss=0.527193 - avg_feature_disc_score=0.210996 - avg_teacher_student_loss=0.262707 - avg_teacher_student_score=0.262684
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.223287 max=2.368249 mean=2.286889
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=2.013794 max=4.827148 mean=3.373383
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=0.091764 max=0.239641 mean=0.136268
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=0.002044 max=0.007239 mean=0.003413
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.196168 max=1.272863 mean=1.207574
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.245972 max=0.260254 mean=0.252022
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.288936 scale=0.016114
+[score_normalization] perceptual_score: median=3.378296 scale=0.559082
+[score_normalization] feature_score: median=0.125136 scale=0.018107
+[score_normalization] latent_score: median=0.003100 scale=0.000483
+[score_normalization] memory_score: median=1.204005 scale=0.002266
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.251465 scale=0.001831
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.29389468696283216, 1.4371277189196099, -0.6868388077175327, 0.29943016250017407, -0.1165126167822243, 0.0, 0.7175310011606706]] intercept=[-0.2518641199193834]
+[Validation] AUROC=0.9387 AUPRC=0.9717 best_F1=0.9841 best_threshold=0.388513 FPR@95TPR=0.1000 selection_score=0.9577
+[EarlyStopping] no improvement: counter=4/5 best=1.0000 current=0.9577
+[Scheduler] epoch=10 next_lr=0.00009873
+[Epoch 11] first batch: input_shape=(8, 3, 256, 256) global_feat_shape=(8, 2048) latent_shape=(8, 128) recon_shape=(8, 3, 256, 256) layer1_shape=(8, 256, 64, 64) layer2_shape=(8, 512, 32, 32) layer3_shape=(8, 1024, 16, 16) layer4_shape=(8, 2048, 8, 8) l1_loss=1.383213 ms_ssim_loss=1.000000 feat_disc_loss=0.640991 perceptual_loss=0.538574 latent_compactness_loss=0.000800 one_class_loss=0.000800 recon_score=2.228490 perceptual_score=1.614441 feature_score=0.018762 latent_score=0.000800 mining_start_score=0.000800 mining_final_score=0.104773 real_disc_score=0.500000 disc_total_loss=0.000000 disc_map_loss=0.000000 disc_image_loss=0.000000 disc_score=0.000000 feature_synth_score=0.079712 feature_synth_ratio=0.625000 feature_disc_loss=0.683596 feature_disc_score=0.198364 memory_score=1.082031 teacher_student_loss=0.253662 teacher_student_score=0.253662 total_loss=2.582458
+Epoch 11/100 - lr=0.00009873 - avg_loss=2.538671 - avg_recon_loss=2.352313 - avg_l1_loss=1.354755 - avg_ms_ssim_loss=0.997558 - avg_feat_disc_loss=0.598152 - avg_perceptual_loss=0.527925 - avg_latent_compactness_loss=0.000388 - avg_one_class_loss=0.000388 - avg_recon_score=2.161318 - avg_perceptual_score=1.583835 - avg_feature_score=0.014939 - avg_latent_score=0.000388 - avg_mining_start_score=0.000388 - avg_mining_final_score=0.100802 - avg_disc_total_loss=0.000000 - avg_disc_map_loss=0.000000 - avg_disc_image_loss=0.000000 - avg_disc_score=0.000000 - avg_real_disc_score=0.500000 - metric=-2.538671 - time=34.139s - throughput=4.92 samples/s - vram_peak_mb=1212.12 - avg_feature_synth_score=0.079776 - avg_feature_synth_ratio=0.589286 - avg_feature_disc_loss=0.611185 - avg_feature_disc_score=0.290864 - avg_teacher_student_loss=0.249860 - avg_teacher_student_score=0.249890
+[score_normalization][debug] recon_score: count=41 finite_ratio=1.0000 min=2.520753 max=2.672825 mean=2.611502
+[score_normalization][debug] perceptual_score: count=41 finite_ratio=1.0000 min=53.007812 max=79.882812 mean=66.193645
+[score_normalization][debug] feature_score: count=41 finite_ratio=1.0000 min=132.935806 max=320.111267 mean=221.353317
+[score_normalization][debug] latent_score: count=41 finite_ratio=1.0000 min=8.081160 max=19.039120 mean=13.424219
+[score_normalization][debug] memory_score: count=41 finite_ratio=1.0000 min=1.232468 max=1.270390 mean=1.248439
+[score_normalization][debug] discriminative_score: count=41 finite_ratio=1.0000 min=0.500000 max=0.500000 mean=0.500000
+[score_normalization][debug] teacher_student_score: count=41 finite_ratio=1.0000 min=0.274902 max=0.283691 mean=0.279481
+[score_normalization] fitted on val_normal with method=mad
+[score_normalization] recon_score: median=2.616355 scale=0.022346
+[score_normalization] perceptual_score: median=65.718750 scale=4.427734
+[score_normalization] feature_score: median=222.726288 scale=31.482574
+[score_normalization] latent_score: median=13.356800 scale=1.963027
+[score_normalization] memory_score: median=1.248302 scale=0.006156
+[score_normalization] discriminative_score: median=0.500000 scale=1.000000
+[score_normalization] teacher_student_score: median=0.279297 scale=0.001953
+[score_fusion_learned] fitted logistic_regression on val_mixed
+[score_fusion_learned] features=['norm_recon_score', 'norm_perceptual_score', 'norm_feature_score', 'norm_latent_score', 'norm_memory_score', 'norm_discriminative_score', 'norm_teacher_student_score']
+[score_fusion_learned] coef=[[-0.8916154440259803, -0.33538341019912754, 1.3097026009023156, 1.3771817614496373, 0.17610168409946472, 0.0, 0.5642858620323999]] intercept=[0.9147088185135381]

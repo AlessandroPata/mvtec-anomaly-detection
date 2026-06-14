@@ -1,0 +1,39 @@
+name: ci
+
+# Fast, CPU-only regression gate for the metric / calibration / fusion code.
+# The live PatchCore verification (verify_all) needs a GPU + the MVTec dataset and
+# is intentionally NOT run here; it is the opt-in test guarded by RUN_GPU_VERIFY=1.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  regression-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/ocgan-modernized
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install CPU dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # CPU-only torch keeps the runner light; the fast tests never touch CUDA.
+          pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          pip install numpy scipy scikit-learn pillow pyyaml omegaconf fastapi "uvicorn[standard]" pytest pytorch-msssim
+
+      - name: Run regression tests
+        run: pytest tests/test_metrics_regression.py -q
+
+      - name: Sanity-import the metric scripts
+        run: |
+          python -c "import pixel_metrics, honest_calibration, ensemble_experiment, recalibrate_thresholds; print('metric scripts import OK')"

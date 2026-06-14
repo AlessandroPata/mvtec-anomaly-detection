@@ -1,0 +1,12 @@
+{
+  "category": "tile",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/tile_production_s46_seed46_20260412_091308",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "tile",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/tile_production_s46_seed46_20260412_091308",
+  "checkpoint": "model.pt"
+}

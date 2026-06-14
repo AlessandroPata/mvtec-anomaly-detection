@@ -1,0 +1,26 @@
+{
+  "env": {
+    "ECC_DISABLED_HOOKS": "pre:edit-write:gateguard-fact-force"
+  },
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem ocgan-modernized\\\\models -Recurse -File | Select-Object @{N='Rel';E={$_.FullName.Replace\\('D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\',''\\)}}, @{N='KB';E={[math]::Round\\($_.Length/1KB\\)}} | Format-Table -AutoSize)",
+      "PowerShell(python --version; python -c \"import torch; print\\('torch', torch.__version__, 'cuda', torch.cuda.is_available\\(\\)\\)\")",
+      "PowerShell(npm *)",
+      "PowerShell(Get-ChildItem D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\outputs\\\\ocgan-modernized -Directory | Select-Object -First 10 Name; Write-Output \"\\(tot: $\\(\\(Get-ChildItem D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\outputs\\\\ocgan-modernized -Directory\\).Count\\) dirs\\)\")",
+      "PowerShell(Get-ChildItem D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\outputs\\\\ocgan-modernized\\\\bottle_production_s43_seed43_20260412_090104 -Recurse -File | Select-Object @{N='Rel';E={$_.FullName.Substring\\(95\\)}}, @{N='KB';E={[math]::Round\\($_.Length/1KB\\)}} | Format-Table -AutoSize; Write-Output '--- final run ---'; Get-ChildItem D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\outputs\\\\ocgan-modernized\\\\bottle_final_s43_seed43_20260328_121759 -Recurse -File | Select-Object -First 25 @{N='Rel';E={$_.FullName.Substring\\(95\\)}}, @{N='KB';E={[math]::Round\\($_.Length/1KB\\)}} | Format-Table -AutoSize)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(git *)",
+      "PowerShell($pip = 'D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\.venv\\\\Scripts\\\\pip.exe'; & $pip install --upgrade pip --quiet; & $pip --version)",
+      "PowerShell(& 'D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\.venv\\\\Scripts\\\\pip.exe' install torch torchvision --index-url https://download.pytorch.org/whl/cu126 --quiet --progress-bar off)",
+      "Skill(update-config)",
+      "PowerShell(& \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\.venv\\\\Scripts\\\\python.exe\" \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\scripts\\\\smoke_predict.py\" cuda)",
+      "PowerShell(& \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\.venv\\\\Scripts\\\\pip.exe\" install hydra-core scikit-learn pandas scipy matplotlib tqdm pyyaml rich --quiet --progress-bar off)",
+      "PowerShell($deadline = \\(Get-Date\\).AddSeconds\\(40\\); $ok = $false; while \\(\\(Get-Date\\) -lt $deadline\\) { try { $r = Invoke-RestMethod -Uri \"http://localhost:8123/api/health\" -TimeoutSec 2; $ok = $true; break } catch { Start-Sleep -Milliseconds 800 } }; if \\($ok\\) { $meta = Invoke-RestMethod -Uri \"http://localhost:8123/api/meta\" -TimeoutSec 30; Write-Output \\(\"categories: \" + $meta.categories.Count + \"  device: \" + $meta.device + \"  dataset: \" + $meta.dataset_available\\); $b = $meta.categories | Where-Object { $_.name -eq 'bottle' }; $b.variants | ForEach-Object { Write-Output \\($_.id + \" available=\" + $_.available + \" approximate=\" + $_.approximate\\) } } else { Write-Output \"SERVER NOT UP\" })",
+      "PowerShell($thumb = Invoke-WebRequest -UseBasicParsing -Uri \"http://localhost:8123/api/dataset/thumb?cat=bottle&defect=good&filename=000.png&size=128\" -TimeoutSec 30; Write-Output \\(\"thumb: \" + $thumb.StatusCode + \" \" + $thumb.Headers['Content-Type'] + \" \" + $thumb.RawContentLength + \" bytes\"\\); try { Invoke-WebRequest -UseBasicParsing -Uri \"http://localhost:8123/api/dataset/thumb?cat=..&defect=good&filename=000.png\" -TimeoutSec 30 } catch { Write-Output \\(\"traversal: \" + $_.Exception.Response.StatusCode.value__\\) }; $mask = Invoke-WebRequest -UseBasicParsing -Uri \"http://localhost:8123/api/dataset/mask?cat=bottle&defect=broken_large&filename=000.png\" -TimeoutSec 30; Write-Output \\(\"mask: \" + $mask.StatusCode + \" \" + $mask.Headers['Content-Type']\\))",
+      "PowerShell(Set-Location \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\"; Write-Output \\(\"name: \" + \\(git config user.name\\) + \"  email: \" + \\(git config user.email\\)\\))",
+      "PowerShell(& \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\venv\\\\Scripts\\\\python.exe\" \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\relazione\\\\gen_tables.py\")",
+      "PowerShell(& \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\ocgan-modernized\\\\.venv\\\\Scripts\\\\python.exe\" \"D:\\\\OCGAN\\\\project\\\\storage_project_outputs_datasets\\\\project\\\\relazione\\\\gen_slides.py\")"
+    ]
+  }
+}

@@ -1,0 +1,278 @@
+{
+  "coreset_effect": [
+    {
+      "category": "bottle",
+      "coreset_10k": 1.0,
+      "full_bank": 1.0,
+      "delta": 0.0
+    },
+    {
+      "category": "cable",
+      "coreset_10k": 0.9824,
+      "full_bank": 0.996,
+      "delta": 0.0136
+    },
+    {
+      "category": "capsule",
+      "coreset_10k": 0.8173,
+      "full_bank": 0.9824,
+      "delta": 0.1651
+    },
+    {
+      "category": "carpet",
+      "coreset_10k": 0.9924,
+      "full_bank": 0.9943,
+      "delta": 0.0019
+    },
+    {
+      "category": "grid",
+      "coreset_10k": 0.9254,
+      "full_bank": 0.968,
+      "delta": 0.0426
+    },
+    {
+      "category": "hazelnut",
+      "coreset_10k": 0.9987,
+      "full_bank": 1.0,
+      "delta": 0.0013
+    },
+    {
+      "category": "leather",
+      "coreset_10k": 1.0,
+      "full_bank": 1.0,
+      "delta": 0.0
+    },
+    {
+      "category": "metal_nut",
+      "coreset_10k": 0.9874,
+      "full_bank": 0.9924,
+      "delta": 0.005
+    },
+    {
+      "category": "pill",
+      "coreset_10k": 0.8643,
+      "full_bank": 0.958,
+      "delta": 0.0937
+    },
+    {
+      "category": "screw",
+      "coreset_10k": 0.8749,
+      "full_bank": 0.9147,
+      "delta": 0.0398
+    },
+    {
+      "category": "tile",
+      "coreset_10k": 1.0,
+      "full_bank": 1.0,
+      "delta": 0.0
+    },
+    {
+      "category": "toothbrush",
+      "coreset_10k": 0.971,
+      "full_bank": 0.971,
+      "delta": 0.0
+    },
+    {
+      "category": "transistor",
+      "coreset_10k": 0.925,
+      "full_bank": 0.9933,
+      "delta": 0.0683
+    },
+    {
+      "category": "wood",
+      "coreset_10k": 0.9906,
+      "full_bank": 0.9911,
+      "delta": 0.0005
+    },
+    {
+      "category": "zipper",
+      "coreset_10k": 0.7658,
+      "full_bank": 0.9801,
+      "delta": 0.2143
+    }
+  ],
+  "aggregation_effect": [
+    {
+      "category": "bottle",
+      "topk_mean": 0.9783,
+      "topk_reweighted": 1.0,
+      "delta": 0.0217
+    },
+    {
+      "category": "cable",
+      "topk_mean": 0.9703,
+      "topk_reweighted": 0.9824,
+      "delta": 0.0121
+    },
+    {
+      "category": "capsule",
+      "topk_mean": 0.7724,
+      "topk_reweighted": 0.8173,
+      "delta": 0.0449
+    },
+    {
+      "category": "carpet",
+      "topk_mean": 0.9801,
+      "topk_reweighted": 0.9924,
+      "delta": 0.0123
+    },
+    {
+      "category": "grid",
+      "topk_mean": 0.9404,
+      "topk_reweighted": 0.9254,
+      "delta": -0.015
+    },
+    {
+      "category": "hazelnut",
+      "topk_mean": 0.9434,
+      "topk_reweighted": 0.9987,
+      "delta": 0.0553
+    },
+    {
+      "category": "leather",
+      "topk_mean": 1.0,
+      "topk_reweighted": 1.0,
+      "delta": 0.0
+    },
+    {
+      "category": "metal_nut",
+      "topk_mean": 0.9496,
+      "topk_reweighted": 0.9874,
+      "delta": 0.0378
+    },
+    {
+      "category": "pill",
+      "topk_mean": 0.6081,
+      "topk_reweighted": 0.8643,
+      "delta": 0.2562
+    },
+    {
+      "category": "screw",
+      "topk_mean": 0.8751,
+      "topk_reweighted": 0.8749,
+      "delta": -0.0002
+    },
+    {
+      "category": "tile",
+      "topk_mean": 0.9971,
+      "topk_reweighted": 1.0,
+      "delta": 0.0029
+    },
+    {
+      "category": "toothbrush",
+      "topk_mean": 0.9179,
+      "topk_reweighted": 0.971,
+      "delta": 0.0531
+    },
+    {
+      "category": "transistor",
+      "topk_mean": 0.939,
+      "topk_reweighted": 0.925,
+      "delta": -0.014
+    },
+    {
+      "category": "wood",
+      "topk_mean": 0.9862,
+      "topk_reweighted": 0.9906,
+      "delta": 0.0044
+    },
+    {
+      "category": "zipper",
+      "topk_mean": 0.7184,
+      "topk_reweighted": 0.7658,
+      "delta": 0.0474
+    }
+  ],
+  "layer_ablation": [
+    {
+      "category": "grid",
+      "configs": {
+        "layer1+layer2+layer3": 0.9666,
+        "layer2+layer3": 0.968
+      }
+    },
+    {
+      "category": "pill",
+      "configs": {
+        "layer1+layer2+layer3": 0.9585,
+        "layer2+layer3": 0.958
+      }
+    },
+    {
+      "category": "screw",
+      "configs": {
+        "layer1+layer2+layer3": 0.9419,
+        "layer2+layer3": 0.9147
+      }
+    },
+    {
+      "category": "toothbrush",
+      "configs": {
+        "layer1+layer2+layer3": 0.971,
+        "layer2+layer3": 0.971
+      }
+    }
+  ],
+  "seed_stability": [
+    {
+      "category": "bottle",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "cable",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "capsule",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "carpet",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "grid",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "hazelnut",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "leather",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "metal_nut",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "pill",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "screw",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "tile",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "toothbrush",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "transistor",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "wood",
+      "auroc_std": 0.0
+    },
+    {
+      "category": "zipper",
+      "auroc_std": 0.0
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+OCGAN2026 — Optimized v2 Re-training Pipeline
+  Categories: ['transistor', 'wood', 'zipper']
+  Seeds: [43, 44, 45]
+  Device: cuda
+  Total runs: 9
+
+
+================================================================================
+[1/9] Training transistor seed=43
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=transistor project.seed=43 project.experiment_name=transistor_optv2_s43 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for transistor seed=43
+
+================================================================================
+[2/9] Training transistor seed=44
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=transistor project.seed=44 project.experiment_name=transistor_optv2_s44 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for transistor seed=44
+
+================================================================================
+[3/9] Training transistor seed=45
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=transistor project.seed=45 project.experiment_name=transistor_optv2_s45 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for transistor seed=45
+
+================================================================================
+[4/9] Training wood seed=43
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=wood project.seed=43 project.experiment_name=wood_optv2_s43 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for wood seed=43
+
+================================================================================
+[5/9] Training wood seed=44
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=wood project.seed=44 project.experiment_name=wood_optv2_s44 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for wood seed=44
+
+================================================================================
+[6/9] Training wood seed=45
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/train.py", line 12, in <module>
+    import hydra
+ModuleNotFoundError: No module named 'hydra'
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=wood project.seed=45 project.experiment_name=wood_optv2_s45 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for wood seed=45
+
+================================================================================
+[7/9] Training zipper seed=43
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=zipper project.seed=43 project.experiment_name=zipper_optv2_s43 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for zipper seed=43
+
+================================================================================
+[8/9] Training zipper seed=44
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=zipper project.seed=44 project.experiment_name=zipper_optv2_s44 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for zipper seed=44
+
+================================================================================
+[9/9] Training zipper seed=45
+  Command: /usr/local/bin/python -m scripts.train --config-name default_mvtec dataset.category=zipper project.seed=45 project.experiment_name=zipper_optv2_s45 project.device=cuda model.reconstruction.use_skip_connections=true model.backbone.unfreeze_from=layer3 model.backbone.unfreeze_lr_factor=0.1 scoring_topk=100 synthetic_anomalies.mode=perlin training.epochs=100 scheduler.enabled=true scheduler.name=cosine scheduler.warmup_epochs=3 scheduler.warmup_start_factor=0.05 scheduler.min_lr=1e-6 memory_bank.enabled=true memory_bank.max_patches=1024 memory_bank.aggregation=max ++memory_bank.selection_method=kcenter_greedy ++memory_bank.kcenter_init=mean score_fusion_learned.enabled=true score_fusion_learned.C=2.0 score_fusion_learned.cv_folds=5 ema.enabled=true ema.decay=0.999 runtime.amp=true augmentations.train.enabled=true augmentations.train.rotation_deg=5.0 augmentations.train.color_jitter=true augmentations.train.brightness=0.08 augmentations.train.contrast=0.08 augmentations.train.gaussian_noise_std=0.008 early_stopping.enabled=true early_stopping.monitor=val_selection_score early_stopping.mode=max early_stopping.patience=5 early_stopping.min_delta=0.001
+================================================================================
+WARNING: Training failed for zipper seed=45
+Traceback (most recent call last):
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/retrain_optimized_v2.py", line 380, in <module>
+    main()
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/retrain_optimized_v2.py", line 371, in main
+    baseline = load_baseline()
+               ^^^^^^^^^^^^^^^
+  File "/notebooks/storage_project_outputs_datasets/project/ocgan-modernized/scripts/retrain_optimized_v2.py", line 186, in load_baseline
+    "mean_auroc": float(row["mean_test_auroc"]),
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: could not convert string to float: 'mean_test_auroc'

@@ -1,0 +1,192 @@
+{
+  "variant": "production",
+  "folds": 5,
+  "macro": {
+    "oracle_acc": 0.9676,
+    "honest_acc": 0.954,
+    "p99_acc": 0.8736,
+    "gap": 0.0137
+  },
+  "per_category": {
+    "bottle": {
+      "oracle_thr": 0.509689,
+      "oracle_acc": 1.0,
+      "honest_acc": 0.9875,
+      "honest_acc_std": 0.025,
+      "honest_f1": 0.9913,
+      "p99_thr": 0.416304,
+      "p99_acc": 0.988,
+      "gap": 0.0125,
+      "n": 83,
+      "n_anom": 63
+    },
+    "cable": {
+      "oracle_thr": 0.575558,
+      "oracle_acc": 0.9867,
+      "honest_acc": 0.98,
+      "honest_acc_std": 0.0267,
+      "honest_f1": 0.9828,
+      "p99_thr": 0.565442,
+      "p99_acc": 0.98,
+      "gap": 0.0067,
+      "n": 150,
+      "n_anom": 92
+    },
+    "capsule": {
+      "oracle_thr": 0.362395,
+      "oracle_acc": 0.9773,
+      "honest_acc": 0.9624,
+      "honest_acc_std": 0.0338,
+      "honest_f1": 0.9769,
+      "p99_thr": 0.449838,
+      "p99_acc": 0.5227,
+      "gap": 0.0149,
+      "n": 132,
+      "n_anom": 109
+    },
+    "carpet": {
+      "oracle_thr": 0.442081,
+      "oracle_acc": 0.9744,
+      "honest_acc": 0.9743,
+      "honest_acc_std": 0.0346,
+      "honest_f1": 0.9825,
+      "p99_thr": 0.437966,
+      "p99_acc": 0.9744,
+      "gap": 0.0001,
+      "n": 117,
+      "n_anom": 89
+    },
+    "grid": {
+      "oracle_thr": 0.395992,
+      "oracle_acc": 0.9359,
+      "honest_acc": 0.9233,
+      "honest_acc_std": 0.0486,
+      "honest_f1": 0.9485,
+      "p99_thr": 0.451465,
+      "p99_acc": 0.8077,
+      "gap": 0.0126,
+      "n": 78,
+      "n_anom": 57
+    },
+    "hazelnut": {
+      "oracle_thr": 0.709057,
+      "oracle_acc": 1.0,
+      "honest_acc": 0.9909,
+      "honest_acc_std": 0.0182,
+      "honest_f1": 0.9926,
+      "p99_thr": 0.702785,
+      "p99_acc": 0.9909,
+      "gap": 0.0091,
+      "n": 110,
+      "n_anom": 70
+    },
+    "leather": {
+      "oracle_thr": 0.483046,
+      "oracle_acc": 1.0,
+      "honest_acc": 0.992,
+      "honest_acc_std": 0.016,
+      "honest_f1": 0.9946,
+      "p99_thr": 0.391559,
+      "p99_acc": 0.9919,
+      "gap": 0.008,
+      "n": 124,
+      "n_anom": 92
+    },
+    "metal_nut": {
+      "oracle_thr": 0.534415,
+      "oracle_acc": 0.9826,
+      "honest_acc": 0.9739,
+      "honest_acc_std": 0.0213,
+      "honest_f1": 0.9843,
+      "p99_thr": 0.576186,
+      "p99_acc": 0.9478,
+      "gap": 0.0087,
+      "n": 115,
+      "n_anom": 93
+    },
+    "pill": {
+      "oracle_thr": 0.480953,
+      "oracle_acc": 0.9341,
+      "honest_acc": 0.9221,
+      "honest_acc_std": 0.0243,
+      "honest_f1": 0.953,
+      "p99_thr": 0.511523,
+      "p99_acc": 0.8383,
+      "gap": 0.012,
+      "n": 167,
+      "n_anom": 141
+    },
+    "screw": {
+      "oracle_thr": 0.355211,
+      "oracle_acc": 0.9187,
+      "honest_acc": 0.9062,
+      "honest_acc_std": 0.028,
+      "honest_f1": 0.9384,
+      "p99_thr": 0.410087,
+      "p99_acc": 0.525,
+      "gap": 0.0125,
+      "n": 160,
+      "n_anom": 119
+    },
+    "tile": {
+      "oracle_thr": 0.544274,
+      "oracle_acc": 1.0,
+      "honest_acc": 0.9917,
+      "honest_acc_std": 0.0167,
+      "honest_f1": 0.9939,
+      "p99_thr": 0.509657,
+      "p99_acc": 0.9915,
+      "gap": 0.0083,
+      "n": 117,
+      "n_anom": 84
+    },
+    "toothbrush": {
+      "oracle_thr": 0.489051,
+      "oracle_acc": 0.9286,
+      "honest_acc": 0.8806,
+      "honest_acc_std": 0.0793,
+      "honest_f1": 0.9177,
+      "p99_thr": 0.535468,
+      "p99_acc": 0.7619,
+      "gap": 0.048,
+      "n": 42,
+      "n_anom": 30
+    },
+    "transistor": {
+      "oracle_thr": 0.538772,
+      "oracle_acc": 0.96,
+      "honest_acc": 0.94,
+      "honest_acc_std": 0.0374,
+      "honest_f1": 0.9213,
+      "p99_thr": 0.550276,
+      "p99_acc": 0.96,
+      "gap": 0.02,
+      "n": 100,
+      "n_anom": 40
+    },
+    "wood": {
+      "oracle_thr": 0.551,
+      "oracle_acc": 0.9494,
+      "honest_acc": 0.9242,
+      "honest_acc_std": 0.0466,
+      "honest_f1": 0.9485,
+      "p99_thr": 0.58856,
+      "p99_acc": 0.9367,
+      "gap": 0.0252,
+      "n": 79,
+      "n_anom": 60
+    },
+    "zipper": {
+      "oracle_thr": 0.370906,
+      "oracle_acc": 0.9669,
+      "honest_acc": 0.9606,
+      "honest_acc_std": 0.0379,
+      "honest_f1": 0.9745,
+      "p99_thr": 0.409255,
+      "p99_acc": 0.8874,
+      "gap": 0.0062,
+      "n": 151,
+      "n_anom": 119
+    }
+  }
+}

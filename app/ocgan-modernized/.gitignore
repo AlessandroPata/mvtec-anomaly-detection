@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual env
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs / tracking
+wandb/
+logs/
+
+# Outputs
+outputs/
+checkpoints/
+results/
+artifacts/
+
+# Data
+data/
+datasets/
+cache/
+.thumb_cache/
+.gan_cache/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Misc
+.env
+*.log

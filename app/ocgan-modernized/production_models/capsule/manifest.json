@@ -1,0 +1,12 @@
+{
+  "category": "capsule",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/capsule_production_s46_seed46_20260412_090356",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "capsule",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/capsule_production_s46_seed46_20260412_090356",
+  "checkpoint": "model.pt"
+}

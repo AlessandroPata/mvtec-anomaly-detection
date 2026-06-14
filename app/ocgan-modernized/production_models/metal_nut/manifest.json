@@ -1,0 +1,12 @@
+{
+  "category": "metal_nut",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/metal_nut_production_s44_seed44_20260412_090948",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "metal_nut",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/metal_nut_production_s44_seed44_20260412_090948",
+  "checkpoint": "model.pt"
+}

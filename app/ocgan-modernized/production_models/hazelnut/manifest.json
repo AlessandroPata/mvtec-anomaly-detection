@@ -1,0 +1,12 @@
+{
+  "category": "hazelnut",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/hazelnut_production_s43_seed43_20260412_090722",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "hazelnut",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/hazelnut_production_s43_seed43_20260412_090722",
+  "checkpoint": "model.pt"
+}

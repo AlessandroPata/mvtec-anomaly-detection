@@ -1,0 +1,288 @@
+project:
+  name: ocgan-modernized
+  seed: 42
+  deterministic: false
+  device: cuda
+  output_dir: /notebooks/storage/outputs
+  experiment_name: debug_run
+
+score_fusion_learned:
+  enabled: true
+  method: logistic_regression
+  fit_split: val_mixed
+  use_normalized_components: true
+  max_iter: 1000
+  C: 1.0
+
+score_normalization:
+  enabled: true
+  reference_split: val_normal
+  method: mad
+  eps: 1.0e-6
+  
+feature_synthetic_anomalies:
+  enabled: true
+  mode: gaussian
+  probability: 0.5
+  target_level: layer4
+  gaussian_std: 0.1
+  mix_alpha: 0.5
+
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 2048
+  distance: l2
+  aggregation: mean
+  score_weight: 0.0
+  
+feature_discriminative:
+      enabled: true
+      weight: 0.1  
+
+teacher_student:
+  enabled: true
+  loss_weight: 0.05
+  score_weight: 0.1
+    
+discriminative:
+  enabled: true
+  map_loss_weight: 1.0
+  image_loss_weight: 0.5
+  threshold: 0.5
+  
+synthetic_anomalies:
+  enabled: true
+  train_only: true
+  probability: 0.5
+  mode: cutpaste
+  min_patch_ratio: 0.1
+  max_patch_ratio: 0.3
+  
+mining_runtime:
+  enabled: true
+  warmup_epochs: 1
+  steps: 3
+  step_size: 0.1
+  noise_std: 0.01
+  clamp_value: 5.0
+
+score_fusion:
+  enabled: true
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  
+one_class:
+  enabled: true
+  score_weight: 1.0
+  loss_weight: 0.1
+  
+preprocessing:
+  resize_mode: pad          # pad | direct
+  interpolation: bilinear
+  antialias: true
+  pad_value: 0
+  center_crop: false
+
+latent_compactness:
+  enabled: true
+  weight: 0.1
+  momentum: 0.9
+  normalize_latent: false
+  
+augmentations:
+  train:
+    enabled: false
+    hflip: false
+    rotation_deg: 0.0
+    color_jitter: false
+    brightness: 0.0
+    contrast: 0.0
+    gaussian_noise_std: 0.0
+    blur: false
+    blur_kernel: 3
+  eval:
+    enabled: false
+    
+dataset:
+  name: dummy
+  root: /notebooks/storage/datasets
+  image_size: 256
+  category: bottle
+  val_normal_ratio: 0.2
+  val_mixed_ratio: 0.5
+  seed: 42
+
+  train_normal:
+    split: train_normal
+    batch_size: 8
+    num_workers: 4
+    length: 32
+    pin_memory: true
+    shuffle: true
+
+  val_normal:
+    split: val_normal
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+
+  val_mixed:
+    split: val_mixed
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+
+  test_blind:
+    split: test_blind
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+    
+model:
+  backbone:
+    name: resnet50
+    pretrained: true
+    frozen: true
+
+  reconstruction:
+    enabled: true
+    name: base_reconstructor
+
+  latent:
+    enabled: true
+    name: compact_latent
+    dim: 128
+
+  discriminator:
+    enabled: false
+    name: base_discriminator
+
+  head:
+    enabled: true
+    name: base_head
+
+  mining:
+    enabled: false
+    name: base_miner
+
+  scoring:
+    reconstruction_score: true
+    perceptual_score: false
+    latent_score: true
+    memory_score: false
+    teacher_student_score: false
+    discriminative_score: true
+
+training:
+  epochs: 2
+  lr: 1e-4
+  weight_decay: 1e-5
+  resume: false
+  resume_path: null
+  grad_clip_norm: 1.0
+  grad_accum_steps: 1
+
+losses:
+  reconstruction:
+    use_l1: true
+    use_mse: false
+    use_ms_ssim: true
+    l1_weight: 1.0
+    mse_weight: 0.0
+    ms_ssim_weight: 1.0
+    data_range: 1.0
+    
+  perceptual:
+    enabled: true
+    weight: 0.1
+    levels: ["layer2", "layer3", "layer4"]
+    
+  latent_regularization:
+    weight: 0.01
+    
+checkpoint:
+  save_last: true
+  save_best: true
+  monitor: val_selection_score
+  mode: max
+
+feature_discrepancy:
+  enabled: true
+  weight: 0.1
+  levels: ["global", "layer3", "layer4"]
+
+model_selection:
+  monitor_split: val_mixed
+  use_composite_score: true
+  composite_weights:
+    auroc: 0.5
+    auprc: 0.3
+    best_f1: 0.2
+    
+normalization:
+  enabled: true
+  mode: imagenet   # imagenet | train_only_stats | none
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+anti_leakage:
+  exact_dedup: true
+  near_dedup: false
+  contamination_check: true
+  split_key: none          # none | object_id | instance_id | lot_id
+  hash_algorithm: sha1
+  
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+  
+runtime:
+  amp: false
+  detect_nan: true
+
+ema:
+  enabled: false
+  decay: 0.999
+
+debug:
+  overfit_one_batch: false
+  save_batch_shapes: true
+  
+profiler:
+  enabled: false
+  profile_batches: 2
+  wait: 0
+  warmup: 1
+  active: 2
+  repeat: 1
+  record_shapes: true
+  profile_memory: true
+  with_stack: false
+  
+distributed:
+  enabled: false
+  strategy: dp
+  
+logging:
+  use_wandb: false
+  log_every_n_steps: 10
+  save_config: true
+  save_env_info: true
+  save_metrics_jsonl: true
+  save_epoch_summary_yaml: true
+  save_debug_images: true
+  debug_image_count: 4
+  save_score_histograms: true
+  histogram_bins: 30

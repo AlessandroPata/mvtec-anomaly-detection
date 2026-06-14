@@ -1,0 +1,12 @@
+{
+  "category": "wood",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/wood_production_s43_seed43_20260412_091611",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "wood",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/wood_production_s43_seed43_20260412_091611",
+  "checkpoint": "model.pt"
+}

@@ -1,0 +1,69 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+
+# ---- Virtualenvs ----
+.venv/
+venv/
+env/
+
+# ---- Node / frontend ----
+node_modules/
+npm-debug.log*
+yarn-error.log*
+# NOTE: app/frontend/dist/ is intentionally committed so start-webapp.bat runs from a clone.
+
+# ---- Runtime caches ----
+.thumb_cache/
+.gan_cache/
+**/.thumb_cache/
+**/.gan_cache/
+
+# ---- Generated report artefacts ----
+relazione/*.html
+relazione/*.backup_*.pptx
+
+# ---- Logs / run outputs ----
+*.log
+app/ocgan-modernized/*_run.log
+app/ocgan-modernized/verify_results*.md
+app/ocgan-modernized/pixel_metrics_results.md
+app/ocgan-modernized/honest_calibration_results.md
+app/ocgan-modernized/ensemble_experiment_results.md
+
+# ---- Dataset (licensed, not redistributed — download from MVTec) ----
+datasets/
+
+# ---- Heavy training artefacts (not needed to run the webapp) ----
+outputs/
+_archive/
+
+# ---- Model weights (6.5 GB total; 29 files exceed GitHub's 100 MB limit) ----
+# Excluded from git: rebuild the PatchCore memory banks with the project scripts,
+# or fetch them separately. The small calibration/metric JSONs, configs and
+# manifests under production_models/ are NOT ignored and stay in the repo.
+*.pt
+*.pth
+*.ckpt
+**/production_models/*/variants/
+
+# ---- Training-campaign detritus (not needed to run or evaluate the system) ----
+**/grid_runs/
+logs/*.txt
+*.7z
+
+# ---- Superseded report artefacts (keep only the canonical _v2 deliverables) ----
+relazione/RELAZIONE.pdf
+relazione/RELAZIONE v2.pdf
+relazione/PRESENTAZIONE.pptx
+relazione/RELAZIONE.md
+relazione/RELAZIONE_FINALE_OCGAN2026.md
+
+# ---- OS ----
+Thumbs.db
+.DS_Store
+desktop.ini

@@ -1,0 +1,12 @@
+{
+  "category": "pill",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/pill_production_s43_seed43_20260412_091048",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "pill",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/pill_production_s43_seed43_20260412_091048",
+  "checkpoint": "model.pt"
+}

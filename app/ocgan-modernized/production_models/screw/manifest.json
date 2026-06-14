@@ -1,0 +1,12 @@
+{
+  "category": "screw",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/screw_production_s43_seed43_20260412_091209",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "screw",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/screw_production_s43_seed43_20260412_091209",
+  "checkpoint": "model.pt"
+}

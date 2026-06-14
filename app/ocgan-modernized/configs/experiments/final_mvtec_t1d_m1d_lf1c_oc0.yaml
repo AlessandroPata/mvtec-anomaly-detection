@@ -1,0 +1,110 @@
+# @package _global_
+defaults:
+  - /default_mvtec
+  - _self_
+
+project:
+  name: ocgan-modernized
+  seed: 42
+  deterministic: false
+  device: cuda
+  output_dir: /notebooks/storage/outputs
+  experiment_name: final_mvtec_t1d_m1d_lf1c_oc0
+
+training:
+  epochs: 100
+
+teacher_student:
+  enabled: true
+  score_weight: 0.40
+
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 1024
+  distance: l2
+  aggregation: max
+  score_weight: 0.4
+  selection_method: kcenter_greedy
+  kcenter_init: mean
+
+score_fusion:
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  teacher_student_weight: 0.7
+  memory_weight: 0.4
+
+score_fusion_learned:
+  enabled: true
+  C: 2.0
+
+one_class:
+  enabled: true
+  score_weight: 0.0
+
+model:
+  scoring:
+    teacher_student_score: true
+    memory_score: true
+    latent_score: false
+
+logging:
+  save_debug_images: false
+  save_score_histograms: true
+  save_metrics_jsonl: true
+  save_epoch_summary_yaml: true
+  save_env_info: true
+  save_config: true
+  log_every_n_steps: 100
+
+checkpoint:
+  save_last: true
+  save_best: true
+
+runtime:
+  amp: true
+  detect_nan: true
+
+ema:
+  enabled: true
+  decay: 0.999
+
+augmentations:
+  train:
+    enabled: true
+    hflip: false
+    rotation_deg: 3.0
+    color_jitter: true
+    brightness: 0.05
+    contrast: 0.05
+    gaussian_noise_std: 0.005
+    blur: false
+    blur_kernel: 3
+  eval:
+    enabled: false
+
+optimizer:
+  name: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-5
+
+scheduler:
+  enabled: true
+  name: cosine
+  warmup_epochs: 2
+  warmup_start_factor: 0.1
+  min_lr: 1.0e-6
+  
+early_stopping:
+  enabled: true
+  monitor: val_selection_score
+  mode: max
+  patience: 3
+  min_delta: 0.002
+  
+analysis:
+  save_failure_analysis: true

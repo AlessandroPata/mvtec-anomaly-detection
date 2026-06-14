@@ -1,0 +1,30 @@
+name: ocgan-modernized
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - pillow
+  - pyyaml
+  - tqdm
+  - jupyterlab
+  - ipykernel
+  - pip:
+      - albumentations
+      - opencv-python
+      - timm
+      - einops
+      - omegaconf
+      - hydra-core
+      - wandb
+      - lpips
+      - scikit-image
+      - pytest
+      - rich

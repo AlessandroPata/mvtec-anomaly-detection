@@ -1,0 +1,53 @@
+{
+  "production": {
+    "bottle": 0.509689,
+    "cable": 0.575558,
+    "capsule": 0.362395,
+    "carpet": 0.442081,
+    "grid": 0.395992,
+    "hazelnut": 0.709057,
+    "leather": 0.483046,
+    "metal_nut": 0.534415,
+    "pill": 0.480953,
+    "screw": 0.355211,
+    "tile": 0.544274,
+    "toothbrush": 0.489051,
+    "transistor": 0.538772,
+    "wood": 0.551,
+    "zipper": 0.370906
+  },
+  "patchcore_v2": {
+    "bottle": 0.634787,
+    "cable": 0.631562,
+    "capsule": 0.60009,
+    "carpet": 0.455024,
+    "grid": 0.468763,
+    "hazelnut": 0.72229,
+    "leather": 0.5197,
+    "metal_nut": 0.665892,
+    "pill": 0.602282,
+    "screw": 0.394252,
+    "tile": 0.561757,
+    "toothbrush": 0.443111,
+    "transistor": 0.639307,
+    "wood": 0.583888,
+    "zipper": 0.543044
+  },
+  "patchcore_v1": {
+    "bottle": 0.693141,
+    "cable": 0.674127,
+    "capsule": 0.659504,
+    "carpet": 0.512443,
+    "grid": 0.504734,
+    "hazelnut": 0.77951,
+    "leather": 0.578841,
+    "metal_nut": 0.718838,
+    "pill": 0.665255,
+    "screw": 0.427122,
+    "tile": 0.604615,
+    "toothbrush": 0.515114,
+    "transistor": 0.676905,
+    "wood": 0.632881,
+    "zipper": 0.56353
+  }
+}

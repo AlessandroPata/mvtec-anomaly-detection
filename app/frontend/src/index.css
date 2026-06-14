@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0f14;
+  --color-panel: #11161d;
+  --color-panel2: #18202b;
+  --color-line: #233041;
+  --color-steel: #8b98a8;
+  --color-fog: #e6edf3;
+  --color-ok: #34d399;
+  --color-alert: #f87171;
+  --color-warn: #fbbf24;
+  --color-accent: #22d3ee;
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html { background: var(--color-ink); color-scheme: dark; }
+  body { @apply bg-ink text-fog font-display antialiased; }
+  ::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+}
+
+@layer utilities {
+  .blueprint {
+    background-image:
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .num { @apply font-mono tabular-nums; }
+  .panel { @apply bg-panel border border-line rounded-xl; }
+}

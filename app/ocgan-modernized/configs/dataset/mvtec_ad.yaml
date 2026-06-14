@@ -1,0 +1,38 @@
+dataset:
+  name: mvtec_ad
+  root: /notebooks/storage/datasets/mvtec_ad
+  category: bottle
+  image_size: 256
+
+  split_mode: holdout_from_train_and_test
+  val_normal_ratio: 0.2
+  val_mixed_anomaly_ratio: 0.5
+  seed: 42
+
+  train_normal:
+    split: train_normal
+    batch_size: 8
+    num_workers: 4
+    pin_memory: true
+    shuffle: true
+
+  val_normal:
+    split: val_normal
+    batch_size: 8
+    num_workers: 4
+    pin_memory: true
+    shuffle: false
+
+  val_mixed:
+    split: val_mixed
+    batch_size: 8
+    num_workers: 4
+    pin_memory: true
+    shuffle: false
+
+  test_blind:
+    split: test_blind
+    batch_size: 8
+    num_workers: 4
+    pin_memory: true
+    shuffle: false

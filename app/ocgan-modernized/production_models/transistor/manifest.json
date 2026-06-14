@@ -1,0 +1,12 @@
+{
+  "category": "transistor",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/transistor_production_s44_seed44_20260412_091444",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "transistor",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/transistor_production_s44_seed44_20260412_091444",
+  "checkpoint": "model.pt"
+}

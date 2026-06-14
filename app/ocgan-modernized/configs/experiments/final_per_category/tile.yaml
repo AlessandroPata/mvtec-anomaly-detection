@@ -1,0 +1,20 @@
+# @package _global_
+defaults:
+  - /experiments/final_mvtec_t1d_m1d_lf1c_oc0
+  - _self_
+
+dataset:
+  category: tile
+
+teacher_student:
+  score_weight: 0.2
+
+memory_bank:
+  score_weight: 0.2
+
+score_fusion_learned:
+  enabled: true
+  C: 5.0
+
+one_class:
+  score_weight: 0.0

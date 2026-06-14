@@ -1,0 +1,12 @@
+{
+  "category": "zipper",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/zipper_production_s43_seed43_20260412_091718",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "zipper",
+  "seed": 43,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/zipper_production_s43_seed43_20260412_091718",
+  "checkpoint": "model.pt"
+}

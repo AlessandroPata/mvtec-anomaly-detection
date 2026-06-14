@@ -1,0 +1,134 @@
+# OCGAN2026 Optimized v2 — all improvements enabled
+#
+# Changes vs. final_mvtec_t1d_m1d_lf1c_oc0:
+#   1. U-Net decoder with skip connections from encoder
+#   2. Perlin-noise synthetic anomalies (DRAEM-style)
+#   3. Patch-level top-k scoring (k=100)
+#   4. Partial backbone unfreezing (layer3+layer4, 10x lower LR)
+#   5. Cross-validated learned score fusion (5-fold)
+#   6. Image size 256 (can override to 512 per-category for Tier 3)
+
+# --- New features ---
+scoring_topk: 100  # top-100 patch scores instead of global mean
+
+model:
+  backbone:
+    name: resnet50
+    pretrained: true
+    frozen: true               # still frozen by default
+    unfreeze_from: layer3      # unfreeze layer3 + layer4
+    unfreeze_lr_factor: 0.1    # backbone LR = 1e-5
+
+  reconstruction:
+    enabled: true
+    name: base_reconstructor
+    use_skip_connections: true  # U-Net decoder
+
+training:
+  epochs: 100
+
+optimizer:
+  name: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-5
+
+scheduler:
+  enabled: true
+  name: cosine
+  warmup_epochs: 3             # extra warmup for backbone fine-tuning
+  warmup_start_factor: 0.05
+  min_lr: 1.0e-6
+
+# Perlin-noise based synthetic anomalies
+synthetic_anomalies:
+  enabled: true
+  train_only: true
+  probability: 0.5
+  mode: perlin
+  perlin_octaves: [2, 4, 8]
+  perlin_beta_range: [0.2, 0.8]
+
+# Teacher-student
+teacher_student:
+  enabled: true
+  loss_weight: 0.05
+  score_weight: 0.4
+  levels:
+    - layer3
+    - layer4
+
+# Memory bank
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 1024
+  distance: l2
+  aggregation: max
+  score_weight: 0.4
+  selection_method: kcenter_greedy
+  kcenter_init: mean
+
+# Score fusion with cross-validation
+score_fusion:
+  enabled: true
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  teacher_student_weight: 0.7
+  memory_weight: 0.4
+
+score_fusion_learned:
+  enabled: true
+  method: logistic_regression
+  fit_split: val_mixed
+  use_normalized_components: true
+  max_iter: 1000
+  C: 2.0
+  cv_folds: 5  # 5-fold stratified CV
+
+# EMA
+ema:
+  enabled: true
+  decay: 0.999
+
+# AMP
+runtime:
+  amp: true
+  detect_nan: true
+
+# Data augmentation (slightly stronger for backbone fine-tuning)
+augmentations:
+  train:
+    enabled: true
+    hflip: false
+    rotation_deg: 5.0
+    color_jitter: true
+    brightness: 0.08
+    contrast: 0.08
+    gaussian_noise_std: 0.008
+    blur: false
+  eval:
+    enabled: false
+
+# Early stopping
+early_stopping:
+  enabled: true
+  monitor: val_selection_score
+  mode: max
+  patience: 5              # more patience with backbone fine-tuning
+  min_delta: 0.001
+
+# One-class
+one_class:
+  enabled: true
+  score_weight: 0.0
+  loss_weight: 0.1
+
+# Logging
+logging:
+  save_debug_images: false
+  save_score_histograms: true
+  save_metrics_jsonl: true

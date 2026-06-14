@@ -1,0 +1,558 @@
+project:
+  name: ocgan-modernized
+  seed: 43
+  deterministic: false
+  device: cuda
+  output_dir: /notebooks/storage/outputs
+  experiment_name: grid_production_s43
+score_fusion_learned:
+  enabled: true
+  method: logistic_regression
+  fit_split: val_mixed
+  use_normalized_components: true
+  max_iter: 1000
+  C: 8.0
+score_normalization:
+  enabled: true
+  reference_split: val_normal
+  method: mad
+  eps: 1.0e-06
+feature_synthetic_anomalies:
+  enabled: true
+  mode: gaussian
+  probability: 0.5
+  target_level: layer4
+  gaussian_std: 0.1
+  mix_alpha: 0.5
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 2048
+  distance: l2
+  aggregation: max
+  score_weight: 0.02
+  selection_method: kcenter_greedy
+  kcenter_init: mean
+feature_discriminative:
+  enabled: true
+  weight: 0.1
+teacher_student:
+  enabled: true
+  loss_weight: 0.05
+  score_weight: 0.4
+  levels:
+  - layer3
+  - layer4
+discriminative:
+  enabled: false
+  map_loss_weight: 1.0
+  image_loss_weight: 0.5
+  threshold: 0.5
+synthetic_anomalies:
+  enabled: true
+  train_only: true
+  probability: 0.5
+  mode: cutpaste
+  min_patch_ratio: 0.1
+  max_patch_ratio: 0.3
+mining_runtime:
+  enabled: true
+  warmup_epochs: 1
+  steps: 3
+  step_size: 0.1
+  noise_std: 0.01
+  clamp_value: 5.0
+score_fusion:
+  enabled: true
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  teacher_student_weight: 0.7
+  memory_weight: 0.4
+one_class:
+  enabled: true
+  score_weight: 0.0
+  loss_weight: 0.1
+preprocessing:
+  resize_mode: pad
+  interpolation: bilinear
+  antialias: true
+  pad_value: 0
+  center_crop: false
+latent_compactness:
+  enabled: true
+  weight: 0.1
+  momentum: 0.9
+  normalize_latent: false
+augmentations:
+  train:
+    enabled: true
+    hflip: false
+    rotation_deg: 3.0
+    color_jitter: true
+    brightness: 0.05
+    contrast: 0.05
+    gaussian_noise_std: 0.005
+    blur: false
+    blur_kernel: 3
+  eval:
+    enabled: false
+dataset:
+  name: mvtec_ad
+  root: /notebooks/storage/datasets/mvtec_ad
+  image_size: 256
+  category: grid
+  val_normal_ratio: 0.2
+  val_mixed_ratio: 0.5
+  seed: 42
+  train_normal:
+    split: train_normal
+    batch_size: 8
+    num_workers: 4
+    length: 32
+    pin_memory: true
+    shuffle: true
+  val_normal:
+    split: val_normal
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  val_mixed:
+    split: val_mixed
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  test_blind:
+    split: test_blind
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+model:
+  backbone:
+    name: resnet50
+    pretrained: true
+    frozen: true
+  reconstruction:
+    enabled: true
+    name: base_reconstructor
+  latent:
+    enabled: true
+    name: compact_latent
+    dim: 128
+  discriminator:
+    enabled: false
+    name: base_discriminator
+  head:
+    enabled: true
+    name: base_head
+  mining:
+    enabled: false
+    name: base_miner
+  scoring:
+    reconstruction_score: true
+    perceptual_score: true
+    latent_score: false
+    memory_score: true
+    teacher_student_score: true
+    discriminative_score: false
+training:
+  epochs: 100
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  resume: false
+  resume_path: null
+  grad_clip_norm: 1.0
+  grad_accum_steps: 1
+losses:
+  reconstruction:
+    use_l1: true
+    use_mse: false
+    use_ms_ssim: true
+    l1_weight: 1.0
+    mse_weight: 0.0
+    ms_ssim_weight: 1.0
+    data_range: 1.0
+  perceptual:
+    enabled: true
+    weight: 0.1
+    levels:
+    - layer2
+    - layer3
+    - layer4
+  latent_regularization:
+    weight: 0.01
+checkpoint:
+  save_last: false
+  save_best: true
+  monitor: val_selection_score
+  mode: max
+feature_discrepancy:
+  enabled: true
+  weight: 0.1
+  levels:
+  - global
+  - layer3
+  - layer4
+model_selection:
+  monitor_split: val_mixed
+  use_composite_score: true
+  composite_weights:
+    auroc: 0.5
+    auprc: 0.3
+    best_f1: 0.2
+normalization:
+  enabled: true
+  mode: imagenet
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+anti_leakage:
+  exact_dedup: true
+  near_dedup: false
+  contamination_check: true
+  split_key: none
+  hash_algorithm: sha1
+runtime:
+  amp: true
+  detect_nan: true
+ema:
+  enabled: true
+  decay: 0.999
+debug:
+  overfit_one_batch: false
+  save_batch_shapes: true
+profiler:
+  enabled: false
+  profile_batches: 2
+  wait: 0
+  warmup: 1
+  active: 2
+  repeat: 1
+  record_shapes: true
+  profile_memory: true
+  with_stack: false
+distributed:
+  enabled: false
+  strategy: dp
+logging:
+  use_wandb: false
+  log_every_n_steps: 100
+  save_config: true
+  save_env_info: true
+  save_metrics_jsonl: true
+  save_epoch_summary_yaml: true
+  save_debug_images: false
+  debug_image_count: 4
+  save_score_histograms: false
+  histogram_bins: 30
+optimizer:
+  name: adamw
+  lr: 0.0001
+  weight_decay: 1.0e-05
+scheduler:
+  enabled: true
+  name: cosine
+  warmup_epochs: 2
+  warmup_start_factor: 0.1
+  min_lr: 1.0e-06
+early_stopping:
+  enabled: true
+  monitor: val_selection_score
+  mode: max
+  patience: 3
+  min_delta: 0.002
+analysis:
+  save_failure_analysis: false
+project:
+  name: ocgan-modernized
+  seed: 43
+  deterministic: false
+  device: cuda
+  output_dir: /notebooks/storage/outputs
+  experiment_name: grid_production_s43
+score_fusion_learned:
+  enabled: true
+  method: logistic_regression
+  fit_split: val_mixed
+  use_normalized_components: true
+  max_iter: 1000
+  C: 8.0
+score_normalization:
+  enabled: true
+  reference_split: val_normal
+  method: mad
+  eps: 1.0e-06
+feature_synthetic_anomalies:
+  enabled: true
+  mode: gaussian
+  probability: 0.5
+  target_level: layer4
+  gaussian_std: 0.1
+  mix_alpha: 0.5
+memory_bank:
+  enabled: true
+  feature_level: layer3
+  max_train_batches: 4
+  max_patches: 2048
+  distance: l2
+  aggregation: max
+  score_weight: 0.02
+  selection_method: kcenter_greedy
+  kcenter_init: mean
+feature_discriminative:
+  enabled: true
+  weight: 0.1
+teacher_student:
+  enabled: true
+  loss_weight: 0.05
+  score_weight: 0.4
+  levels:
+  - layer3
+  - layer4
+discriminative:
+  enabled: false
+  map_loss_weight: 1.0
+  image_loss_weight: 0.5
+  threshold: 0.5
+synthetic_anomalies:
+  enabled: true
+  train_only: true
+  probability: 0.5
+  mode: cutpaste
+  min_patch_ratio: 0.1
+  max_patch_ratio: 0.3
+mining_runtime:
+  enabled: true
+  warmup_epochs: 1
+  steps: 3
+  step_size: 0.1
+  noise_std: 0.01
+  clamp_value: 5.0
+score_fusion:
+  enabled: true
+  recon_weight: 1.0
+  perceptual_weight: 1.0
+  feature_weight: 1.0
+  latent_weight: 0.0
+  discriminative_weight: 0.0
+  teacher_student_weight: 0.7
+  memory_weight: 0.4
+one_class:
+  enabled: true
+  score_weight: 0.0
+  loss_weight: 0.1
+preprocessing:
+  resize_mode: pad
+  interpolation: bilinear
+  antialias: true
+  pad_value: 0
+  center_crop: false
+latent_compactness:
+  enabled: true
+  weight: 0.1
+  momentum: 0.9
+  normalize_latent: false
+augmentations:
+  train:
+    enabled: true
+    hflip: false
+    rotation_deg: 3.0
+    color_jitter: true
+    brightness: 0.05
+    contrast: 0.05
+    gaussian_noise_std: 0.005
+    blur: false
+    blur_kernel: 3
+  eval:
+    enabled: false
+dataset:
+  name: mvtec_ad
+  root: /notebooks/storage/datasets/mvtec_ad
+  image_size: 256
+  category: grid
+  val_normal_ratio: 0.2
+  val_mixed_ratio: 0.5
+  seed: 42
+  train_normal:
+    split: train_normal
+    batch_size: 8
+    num_workers: 4
+    length: 32
+    pin_memory: true
+    shuffle: true
+  val_normal:
+    split: val_normal
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  val_mixed:
+    split: val_mixed
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+  test_blind:
+    split: test_blind
+    batch_size: 8
+    num_workers: 4
+    length: 16
+    pin_memory: true
+    shuffle: false
+model:
+  backbone:
+    name: resnet50
+    pretrained: true
+    frozen: true
+  reconstruction:
+    enabled: true
+    name: base_reconstructor
+  latent:
+    enabled: true
+    name: compact_latent
+    dim: 128
+  discriminator:
+    enabled: false
+    name: base_discriminator
+  head:
+    enabled: true
+    name: base_head
+  mining:
+    enabled: false
+    name: base_miner
+  scoring:
+    reconstruction_score: true
+    perceptual_score: true
+    latent_score: false
+    memory_score: true
+    teacher_student_score: true
+    discriminative_score: false
+training:
+  epochs: 100
+  lr: 0.0001
+  weight_decay: 1.0e-05
+  resume: false
+  resume_path: null
+  grad_clip_norm: 1.0
+  grad_accum_steps: 1
+losses:
+  reconstruction:
+    use_l1: true
+    use_mse: false
+    use_ms_ssim: true
+    l1_weight: 1.0
+    mse_weight: 0.0
+    ms_ssim_weight: 1.0
+    data_range: 1.0
+  perceptual:
+    enabled: true
+    weight: 0.1
+    levels:
+    - layer2
+    - layer3
+    - layer4
+  latent_regularization:
+    weight: 0.01
+checkpoint:
+  save_last: false
+  save_best: true
+  monitor: val_selection_score
+  mode: max
+feature_discrepancy:
+  enabled: true
+  weight: 0.1
+  levels:
+  - global
+  - layer3
+  - layer4
+model_selection:
+  monitor_split: val_mixed
+  use_composite_score: true
+  composite_weights:
+    auroc: 0.5
+    auprc: 0.3
+    best_f1: 0.2
+normalization:
+  enabled: true
+  mode: imagenet
+  mean:
+  - 0.485
+  - 0.456
+  - 0.406
+  std:
+  - 0.229
+  - 0.224
+  - 0.225
+anti_leakage:
+  exact_dedup: true
+  near_dedup: false
+  contamination_check: true
+  split_key: none
+  hash_algorithm: sha1
+runtime:
+  amp: true
+  detect_nan: true
+ema:
+  enabled: true
+  decay: 0.999
+debug:
+  overfit_one_batch: false
+  save_batch_shapes: true
+profiler:
+  enabled: false
+  profile_batches: 2
+  wait: 0
+  warmup: 1
+  active: 2
+  repeat: 1
+  record_shapes: true
+  profile_memory: true
+  with_stack: false
+distributed:
+  enabled: false
+  strategy: dp
+logging:
+  use_wandb: false
+  log_every_n_steps: 100
+  save_config: true
+  save_env_info: true
+  save_metrics_jsonl: true
+  save_epoch_summary_yaml: true
+  save_debug_images: false
+  debug_image_count: 4
+  save_score_histograms: false
+  histogram_bins: 30
+optimizer:
+  name: adamw
+  lr: 0.0001
+  weight_decay: 1.0e-05
+scheduler:
+  enabled: true
+  name: cosine
+  warmup_epochs: 2
+  warmup_start_factor: 0.1
+  min_lr: 1.0e-06
+early_stopping:
+  enabled: true
+  monitor: val_selection_score
+  mode: max
+  patience: 3
+  min_delta: 0.002
+analysis:
+  save_failure_analysis: false

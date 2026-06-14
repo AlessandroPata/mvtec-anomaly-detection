@@ -1,0 +1,12 @@
+{
+  "category": "toothbrush",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/toothbrush_production_s44_seed44_20260412_091401",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "toothbrush",
+  "seed": 44,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/toothbrush_production_s44_seed44_20260412_091401",
+  "checkpoint": "model.pt"
+}

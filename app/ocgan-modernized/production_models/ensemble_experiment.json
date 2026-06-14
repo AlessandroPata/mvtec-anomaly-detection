@@ -1,0 +1,140 @@
+{
+  "sample": 60,
+  "gan": "ocgan_optv2",
+  "macro": {
+    "macro_auroc_pc": 0.9779,
+    "macro_auroc_ensemble": 0.9798,
+    "macro_delta": 0.0019,
+    "categories_helped": [
+      "screw",
+      "toothbrush",
+      "transistor"
+    ]
+  },
+  "verdict": "no material gain \u2014 ship PatchCore alone",
+  "per_category": {
+    "bottle": {
+      "auroc_pc": 1.0,
+      "auroc_gan": 0.9519,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0,
+      "n": 60,
+      "n_anom": 46
+    },
+    "cable": {
+      "auroc_pc": 0.9965,
+      "auroc_gan": 0.6569,
+      "auroc_ensemble_heldout": 0.9943,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": -0.0022,
+      "n": 60,
+      "n_anom": 37
+    },
+    "capsule": {
+      "auroc_pc": 0.88,
+      "auroc_gan": 0.892,
+      "auroc_ensemble_heldout": 0.87,
+      "mean_fusion_weight": 0.28,
+      "delta_vs_patchcore": -0.01,
+      "n": 60,
+      "n_anom": 50
+    },
+    "carpet": {
+      "auroc_pc": 1.0,
+      "auroc_gan": 0.8618,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0,
+      "n": 60,
+      "n_anom": 46
+    },
+    "grid": {
+      "auroc_pc": 0.9616,
+      "auroc_gan": 0.7202,
+      "auroc_ensemble_heldout": 0.9613,
+      "mean_fusion_weight": 0.2,
+      "delta_vs_patchcore": -0.0003,
+      "n": 60,
+      "n_anom": 44
+    },
+    "hazelnut": {
+      "auroc_pc": 1.0,
+      "auroc_gan": 1.0,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0,
+      "n": 60,
+      "n_anom": 39
+    },
+    "leather": {
+      "auroc_pc": 1.0,
+      "auroc_gan": 0.9556,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0,
+      "n": 60,
+      "n_anom": 45
+    },
+    "metal_nut": {
+      "auroc_pc": 0.9981,
+      "auroc_gan": 0.7514,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0019,
+      "n": 60,
+      "n_anom": 49
+    },
+    "pill": {
+      "auroc_pc": 0.9542,
+      "auroc_gan": 0.7691,
+      "auroc_ensemble_heldout": 0.9418,
+      "mean_fusion_weight": 0.22,
+      "delta_vs_patchcore": -0.0124,
+      "n": 60,
+      "n_anom": 51
+    },
+    "screw": {
+      "auroc_pc": 0.9793,
+      "auroc_gan": 0.8474,
+      "auroc_ensemble_heldout": 0.9926,
+      "mean_fusion_weight": 0.24,
+      "delta_vs_patchcore": 0.0133,
+      "n": 60,
+      "n_anom": 45
+    },
+    "tile": {
+      "auroc_pc": 1.0,
+      "auroc_gan": 0.9987,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.0,
+      "delta_vs_patchcore": 0.0,
+      "n": 60,
+      "n_anom": 41
+    },
+    "toothbrush": {
+      "auroc_pc": 0.95,
+      "auroc_gan": 0.8222,
+      "auroc_ensemble_heldout": 0.9778,
+      "mean_fusion_weight": 0.2,
+      "delta_vs_patchcore": 0.0278,
+      "n": 42,
+      "n_anom": 30
+    },
+    "transistor": {
+      "auroc_pc": 0.9931,
+      "auroc_gan": 0.7789,
+      "auroc_ensemble_heldout": 1.0,
+      "mean_fusion_weight": 0.08,
+      "delta_vs_patchcore": 0.0069,
+      "n": 60,
+      "n_anom": 24
+    },
+    "wood": {
+      "skip": "HTTPException: 400: No ocgan_optv2 checkpoint for wood"
+    },
+    "zipper": {
+      "skip": "HTTPException: 400: No ocgan_optv2 checkpoint for zipper"
+    }
+  }
+}

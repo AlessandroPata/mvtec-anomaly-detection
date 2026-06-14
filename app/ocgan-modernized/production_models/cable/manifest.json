@@ -1,0 +1,12 @@
+{
+  "category": "cable",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/cable_production_s46_seed46_20260412_090201",
+  "checkpoint": "model.pt"
+}
+{
+  "category": "cable",
+  "seed": 46,
+  "run_dir": "/notebooks/storage/outputs/ocgan-modernized/cable_production_s46_seed46_20260412_090201",
+  "checkpoint": "model.pt"
+}
